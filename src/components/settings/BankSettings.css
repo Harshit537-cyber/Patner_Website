@@ -1,0 +1,273 @@
+/* ===================================================
+   ULTRA-PREMIUM BANK SETTINGS (DOUBLE BORDER FIXED)
+   =================================================== */
+
+.bento-bank-container {
+  max-width: 680px;
+  margin: 40px auto;
+  position: relative;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Ambient Radial Glow Effect */
+.bento-bank-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, var(--color-soft-purple-bg, rgba(238, 242, 255, 0.8)) 0%, rgba(255, 255, 255, 0) 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main Card Shell - Single Clean Border */
+.bento-bank-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-soft-gold, rgba(212, 175, 55, 0.3));
+  border-radius: var(--radius-lg, 28px);
+  box-shadow: 0 20px 50px -15px rgba(91, 70, 224, 0.1),
+              0 2px 6px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.bento-bank-card:hover {
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 28px 60px -15px rgba(91, 70, 224, 0.16);
+}
+
+/* Top Accent Glow Line */
+.bento-bank-top-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary, #4f46e5), var(--color-accent-gold, #d4af37));
+}
+
+/* Header Section */
+.bento-bank-header {
+  padding: 32px 36px 24px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.bento-bank-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bento-bank-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-primary, #4f46e5);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bento-bank-eyebrow .sparkle {
+  color: var(--color-accent-gold, #d4af37);
+}
+
+.bento-bank-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-heading, #0f172a);
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.bento-bank-title .highlight {
+  background: linear-gradient(135deg, var(--color-primary, #4f46e5), var(--color-accent-gold, #d4af37));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bento-bank-sub {
+  font-size: 0.88rem;
+  color: var(--color-muted, #64748b);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.bento-badge-encrypted {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-soft-purple-bg, #eef2ff);
+  border: 1px solid var(--color-soft-gold, #fef08a);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-primary, #4f46e5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  white-space: nowrap;
+}
+
+/* Form Area */
+.bento-bank-form {
+  padding: 32px 36px 36px;
+}
+
+.bento-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.grid-col-full {
+  grid-column: span 2;
+}
+
+/* Input Overrides - Fixes Double Border Issue */
+.bento-bank-input {
+  width: 100%;
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: var(--radius-lg, 16px) !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: var(--color-heading, #0f172a) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.25s ease !important;
+  box-sizing: border-box;
+}
+
+.bento-bank-input:focus {
+  background: #ffffff !important;
+  border-color: var(--color-primary, #4f46e5) !important;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12) !important;
+}
+
+.bento-bank-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Footer & Buttons */
+.bento-bank-footer {
+  padding-top: 24px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.bento-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid var(--color-soft-gold, #fef08a);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-primary, #4f46e5);
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent-gold, #d4af37);
+  box-shadow: 0 0 8px var(--color-accent-gold, #d4af37);
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+/* Save Button */
+.bento-save-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--color-primary, #4f46e5), #3b82f6);
+  color: #ffffff;
+  border: none !important;
+  border-radius: 99px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
+}
+
+.bento-save-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px -5px rgba(79, 70, 229, 0.45);
+  filter: brightness(1.08);
+}
+
+.bento-save-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.bento-save-btn .btn-arrow-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.bento-save-btn:hover:not(:disabled) .btn-arrow-icon {
+  transform: translateX(4px);
+}
+
+/* Responsive Overrides */
+@media (max-width: 640px) {
+  .bento-bank-header,
+  .bento-bank-form {
+    padding: 24px 20px;
+  }
+
+  .bento-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .grid-col-full {
+    grid-column: span 1;
+  }
+
+  .bento-bank-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .bento-save-btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,227 @@
+/* ===================================================
+   CONSULTATION RATES BENTO CARD (MATCHED TO PROFILE)
+   =================================================== */
+
+.rates-bento-container {
+  width: 100%;
+  margin-top: 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Main Card Shell - Aligning with Profile Cards */
+.rates-bento-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: 0 4px 20px -2px rgba(91, 70, 224, 0.04);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.rates-bento-card:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 30px -4px rgba(91, 70, 224, 0.08);
+}
+
+/* Soft Top Gradient Accent */
+.rates-top-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3.5px;
+  background: linear-gradient(90deg, var(--color-primary, #6366f1), var(--color-accent-gold, #d4af37));
+}
+
+/* Header Section */
+.rates-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px dashed #f1f5f9;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.rates-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rates-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-primary, #6366f1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rates-eyebrow .sparkle {
+  color: var(--color-accent-gold, #d4af37);
+}
+
+.rates-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.rates-title .highlight {
+  color: var(--color-primary, #6366f1);
+}
+
+.rates-sub {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 2px 0 0 0;
+  line-height: 1.4;
+}
+
+.rates-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f5f3ff;
+  border: 1px solid #ede9fe;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #6366f1;
+  white-space: nowrap;
+}
+
+/* Form Body */
+.rates-body {
+  padding: 24px 28px 28px;
+}
+
+/* Clean 3-Column Layout */
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* Clean Single Border Input Override */
+.rates-custom-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: #0f172a !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box;
+}
+
+.rates-custom-input:focus {
+  background: #ffffff !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Footer Section */
+.rates-footer {
+  padding-top: 20px;
+  border-top: 1px dashed #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.rates-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fafafa;
+  border: 1px solid #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+/* Submit Button */
+.rates-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: var(--color-primary, #6366f1);
+  color: #ffffff;
+  border: none !important;
+  border-radius: 99px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 16px -4px rgba(99, 102, 241, 0.35);
+}
+
+.rates-save-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #4f46e5;
+  box-shadow: 0 10px 20px -4px rgba(99, 102, 241, 0.45);
+}
+
+.rates-save-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.rates-save-btn .btn-arrow-icon {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.2s ease;
+}
+
+.rates-save-btn:hover:not(:disabled) .btn-arrow-icon {
+  transform: translateX(3px);
+}
+
+/* Responsive Support */
+@media (max-width: 768px) {
+  .rates-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .rates-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rates-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .rates-save-btn {
+    width: 100%;
+  }
+}

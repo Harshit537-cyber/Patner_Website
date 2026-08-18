@@ -1,0 +1,15 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-neutral { background: var(--color-soft-purple-bg); color: var(--color-primary-dark); }
+.badge-success { background: rgba(91, 164, 119, 0.14); color: var(--color-success); }
+.badge-warning { background: rgba(214, 163, 68, 0.16); color: var(--color-warning); }
+.badge-error { background: rgba(212, 106, 106, 0.14); color: var(--color-error); }
+.badge-gold { background: var(--color-soft-gold); color: #7A5B15; }

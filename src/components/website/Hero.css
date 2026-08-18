@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.hero {
+  padding: 30px 0 50px;
+  background: linear-gradient(180deg, var(--color-soft-purple-bg) 0%, var(--color-bg) 70%);
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* --- Left Section Copy --- */
+
+.eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--color-soft-gold);
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.eyebrow-spark {
+  color: var(--color-primary);
+  font-size: 0.85rem;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  line-height: 1.15;
+  color: var(--color-heading);
+  max-width: 580px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.highlight-text {
+  color: var(--color-primary);
+  display: inline-block;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  max-width: 480px;
+  color: var(--color-muted);
+  margin-top: 16px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.hero-cta { 
+  display: flex; 
+  gap: 14px; 
+  margin-bottom: 36px; 
+  flex-wrap: wrap; 
+}
+
+/* --- Inline Stats --- */
+
+.hero-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number { 
+  font-size: 1.5rem; 
+  color: var(--color-heading); 
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.stat-label { 
+  font-size: 0.78rem; 
+  color: var(--color-muted); 
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--color-soft-gold);
+}
+
+/* --- Right Visual (Astrological Wheel) --- */
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 440px;
+  perspective: 1000px;
+}
+
+.astro-stage {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  animation: floatStage 6s ease-in-out infinite alternate;
+}
+
+.glow-aura {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-soft-gold) 0%, transparent 70%);
+  opacity: 0.6;
+  filter: blur(35px);
+}
+
+/* Constellation Stars */
+.star-field .star {
+  position: absolute;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  animation: starPulse 3s ease-in-out infinite alternate;
+}
+
+.s1 { top: 15px; left: 40px; animation-delay: 0s; }
+.s2 { top: 70px; right: 20px; animation-delay: 1s; }
+.s3 { bottom: 40px; left: 50px; animation-delay: 2s; }
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Outer Ring with Axis */
+.ring-outer-vedic {
+  width: 370px;
+  height: 370px;
+  border: 1.5px solid var(--color-primary);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.04);
+  animation: rotateCW 40s linear infinite;
+}
+
+.vedic-axis {
+  position: absolute;
+  background: var(--color-soft-gold);
+}
+
+.axis-v { width: 1px; height: 100%; }
+.axis-h { width: 100%; height: 1px; }
+
+/* Middle Dashed Orbit Ring */
+.ring-middle-orbit {
+  width: 270px;
+  height: 270px;
+  border: 1.5px dashed var(--color-primary);
+  opacity: 0.8;
+  animation: rotateCCW 26s linear infinite;
+}
+
+.orbit-node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.node-1 { top: -4px; }
+.node-2 { bottom: -4px; }
+
+/* Inner Polygon Ring */
+.ring-inner-geometry {
+  width: 180px;
+  height: 180px;
+  border: 1.5px solid var(--color-primary);
+  animation: rotateCW 18s linear infinite;
+}
+
+.astro-diamond {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--color-primary);
+  opacity: 0.35;
+  transform: rotate(45deg);
+}
+
+.astro-diamond.alt {
+  transform: rotate(0deg);
+}
+
+/* Center Core */
+.center-sun-core {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--color-card, #FFFFFF);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-elevated, 0 10px 25px rgba(0,0,0,0.08));
+}
+
+.sun-center-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 12px var(--color-primary);
+  z-index: 2;
+}
+
+.sun-wave {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-primary);
+  animation: pulseExpand 3s ease-out infinite;
+}
+
+/* Keyframes Definitions */
+
+@keyframes rotateCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rotateCCW {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes floatStage {
+  0% { transform: translateY(0px) rotateX(12deg) rotateY(-5deg); }
+  100% { transform: translateY(-10px) rotateX(18deg) rotateY(-8deg); }
+}
+
+@keyframes pulseExpand {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes starPulse {
+  0% { transform: scale(0.8); opacity: 0.4; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Responsive Support */
+
+@media (max-width: 1024px) {
+  .hero-title { font-size: 2.7rem; }
+  .astro-stage { width: 320px; height: 320px; }
+  .ring-outer-vedic { width: 310px; height: 310px; }
+  .ring-middle-orbit { width: 220px; height: 220px; }
+  .ring-inner-geometry { width: 140px; height: 140px; }
+}
+
+@media (max-width: 900px) {
+  .hero { padding-top: 20px; }
+  .hero-inner { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 24px; }
+  .hero-title { font-size: 2.2rem; max-width: 460px; }
+  .hero-cta { justify-content: center; }
+  .hero-stats-row { justify-content: center; }
+  .hero-visual { height: 340px; }
+}

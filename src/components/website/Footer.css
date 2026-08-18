@@ -1,0 +1,229 @@
+/* ===========================================
+   EXACT BENTO THEME MATCHED FOOTER
+   =========================================== */
+
+.footer {
+  background: var(--color-bg);
+  color: var(--color-muted);
+  padding-top: 64px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Hero Ambient Radial Glows (Same as Bento) */
+.footer-glow-orb {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.footer .orb-left {
+  top: 0%;
+  left: -80px;
+  background: radial-gradient(circle, var(--color-soft-gold) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.footer .orb-right {
+  bottom: 0%;
+  right: -80px;
+  background: radial-gradient(circle, var(--color-soft-purple-bg) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+/* Gradient Top Accent Border */
+.footer-top-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent-gold));
+  opacity: 0.8;
+  z-index: 2;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 32px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+/* Brand Section */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display, inherit);
+  color: var(--color-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.partner-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  background: var(--color-soft-purple-bg);
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--color-soft-gold);
+  text-transform: uppercase;
+}
+
+.footer-tagline {
+  max-width: 320px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+  margin: 0 0 16px 0;
+}
+
+.footer-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-soft-gold);
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  width: fit-content;
+}
+
+.trust-icon {
+  color: var(--color-accent-gold);
+}
+
+/* Columns */
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-col h5 {
+  color: var(--color-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+}
+
+/* Links */
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  width: fit-content;
+}
+
+.footer-link:hover {
+  color: var(--color-primary);
+  transform: translateX(3px);
+}
+
+.link-arrow {
+  opacity: 0;
+  color: var(--color-primary);
+  transform: translate(-4px, 4px);
+  transition: all 0.25s ease;
+}
+
+.footer-link:hover .link-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.highlighted-link {
+  color: var(--color-heading);
+  font-weight: 700;
+}
+
+.highlighted-link:hover {
+  color: var(--color-primary);
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  padding: 20px 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  position: relative;
+  z-index: 2;
+}
+
+.footer-bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+.footer-crafted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.heart-icon {
+  color: #e11d48;
+  fill: #e11d48;
+}
+
+/* Responsive Support */
+@media (max-width: 768px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand {
+    grid-column: span 1;
+  }
+
+  .footer-bottom-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}

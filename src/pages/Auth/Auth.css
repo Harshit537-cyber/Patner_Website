@@ -1,0 +1,388 @@
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-panel {
+  padding: 56px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.auth-logo {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-heading);
+  margin-bottom: 40px;
+}
+.auth-logo span { color: var(--color-accent-gold); font-size: 0.65rem; letter-spacing: 0.08em; }
+
+.auth-panel h1 { font-size: 1.8rem; margin-bottom: 6px; }
+.auth-subtitle { color: var(--color-muted); margin-bottom: 32px; }
+
+.auth-footer {
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+.auth-footer a { color: var(--color-primary); font-weight: 600; }
+
+.auth-aside {
+  background: linear-gradient(160deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #F2ECF8;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 64px;
+}
+
+.auth-aside blockquote {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.auth-aside p { font-size: 0.9rem; color: var(--color-soft-gold); }
+
+.auth-otp-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.auth-otp-inputs input {
+  width: 48px;
+  height: 54px;
+  text-align: center;
+  font-size: 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+}
+.auth-otp-inputs input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+@media (max-width: 900px) {
+  .auth-screen { grid-template-columns: 1fr; }
+  .auth-aside { display: none; }
+  .auth-panel { padding: 40px 24px; }
+}
+/* ===================================================
+   FIXED CLEAN PHONE INPUT UI
+   =================================================== */
+
+.auth-custom-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-heading, #0F172A);
+  letter-spacing: 0.02em;
+}
+
+/* Flex Container for Country Pill + Input Box */
+.phone-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--color-soft-purple-bg, rgba(91, 70, 224, 0.06));
+  border: 1.5px solid var(--color-soft-gold, rgba(212, 175, 55, 0.4));
+  border-radius: var(--radius-md, 14px);
+  padding: 4px 6px;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.phone-input-wrapper:focus-within {
+  background: #FFFFFF;
+  border-color: var(--color-primary, #5B46E0);
+  box-shadow: 0 0 0 4px rgba(91, 70, 224, 0.12),
+              0 4px 12px rgba(91, 70, 224, 0.08);
+}
+
+/* +91 Pill Badge */
+.country-code-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFFFFF;
+  border: 1px solid var(--color-soft-gold, rgba(212, 175, 55, 0.35));
+  padding: 8px 12px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.country-code-pill .code-flag {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.country-code-pill .code-text {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--color-heading, #0F172A);
+}
+
+/* Text Input Field */
+.phone-field {
+  flex: 1;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  padding: 10px 14px;
+  font-family: var(--sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-heading, #0F172A);
+  width: 100%;
+  box-shadow: none !important;
+}
+
+.phone-field::placeholder {
+  color: var(--color-muted, #94A3B8);
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+/* Error Banner */
+.auth-error-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #DC2626;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: var(--radius-md, 12px);
+  margin-bottom: 4px;
+}
+/* Container & Hide Scrollbars */
+.reg-form-container {
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* Step Progress Indicator */
+.reg-steps-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 99px;
+  border: 1px solid #f1f5f9;
+}
+
+.reg-step-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  transition: all 0.3s ease;
+}
+
+.reg-step-pill.active {
+  color: #6366f1;
+}
+
+.reg-step-pill.completed {
+  color: #10b981;
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.reg-step-pill.active .step-num {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.reg-step-pill.completed .step-num {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.reg-step-line {
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  margin: 0 12px;
+}
+
+/* 2-Column Grid Layout */
+.reg-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 18px;
+}
+
+.reg-full-span {
+  grid-column: span 2;
+}
+
+/* Custom Input Styling */
+.reg-custom-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  color: #0f172a !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box;
+}
+
+.reg-custom-input:focus {
+  background: #ffffff !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 3.5px rgba(99, 102, 241, 0.12) !important;
+}
+
+.reg-select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reg-field-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.reg-select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2064748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  background-size: 16px !important;
+}
+
+.reg-textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: inherit;
+}
+
+.reg-custom-input.has-error {
+  border-color: #ef4444 !important;
+}
+
+.reg-field-err {
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Error Banner */
+.reg-error-banner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Buttons */
+.reg-btn-group {
+  display: flex;
+  gap: 12px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.reg-btn-primary {
+  width: 100%;
+  padding: 12px 20px !important;
+  background: #6366f1 !important;
+  color: #ffffff !important;
+  border-radius: 99px !important;
+  font-weight: 700 !important;
+  border: none !important;
+  cursor: pointer;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.35) !important;
+}
+
+.reg-btn-primary:hover {
+  background: #4f46e5 !important;
+  transform: translateY(-1px);
+}
+
+.reg-btn-secondary {
+  padding: 12px 22px;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 99px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reg-btn-secondary:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.reg-link {
+  color: #6366f1;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.reg-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustment */
+@media (max-width: 640px) {
+  .reg-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .reg-full-span {
+    grid-column: span 1;
+  }
+}

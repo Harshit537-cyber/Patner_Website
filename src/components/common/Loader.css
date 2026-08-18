@@ -1,0 +1,24 @@
+.loader-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.loader-ring {
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: loader-spin 0.8s linear infinite;
+}
+
+.loader-label {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+@keyframes loader-spin {
+  to { transform: rotate(360deg); }
+}

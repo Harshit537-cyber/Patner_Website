@@ -1,0 +1,14 @@
+@media (max-width: 1024px) {
+  .section { padding: 64px 0; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 18px; }
+  .section { padding: 48px 0; }
+  h1 { font-size: 2rem !important; }
+  h2 { font-size: 1.6rem !important; }
+}
+
+@media (max-width: 480px) {
+  .section { padding: 36px 0; }
+}

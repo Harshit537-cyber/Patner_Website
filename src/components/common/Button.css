@@ -1,0 +1,105 @@
+/* ===================================================
+   ASTRONARHARI BUTTON SYSTEM (CLEAN SOLID PURPLE)
+   =================================================== */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--sans, 'Plus Jakarta Sans', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-full, 99px);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  box-sizing: border-box;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98) !important;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* --- Sizes --- */
+.btn-sm { padding: 9px 20px; font-size: 0.82rem; }
+.btn-md { padding: 13px 28px; font-size: 0.95rem; }
+.btn-lg { padding: 16px 36px; font-size: 1.05rem; }
+
+.btn-full { width: 100%; }
+
+/* --- PRIMARY BUTTON (Solid Purple - No Golden Border Line) --- */
+.btn-primary {
+  color: #FFFFFF !important;
+  background: var(--color-primary) !important; /* Exact Purple from Arrow Hover */
+  border: 1px solid var(--color-primary) !important; /* Clean Purple Border */
+  box-shadow: 0 8px 20px -4px rgba(91, 70, 224, 0.35);
+}
+
+/* Golden line completely removed from hover */
+.btn-primary::before {
+  display: none !important;
+}
+
+/* Hover Effect: Pure solid purple with smooth subtle lift */
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 12px 28px -4px rgba(91, 70, 224, 0.45);
+}
+
+/* --- SECONDARY BUTTON --- */
+.btn-secondary {
+  color: var(--color-primary);
+  background: #FFFFFF;
+  border: 1px solid var(--color-soft-gold);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--color-soft-purple-bg);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 20px rgba(91, 70, 224, 0.12);
+}
+
+/* --- OUTLINE BUTTON --- */
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--color-primary);
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(91, 70, 224, 0.25);
+}
+
+/* Spinner */
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
