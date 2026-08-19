@@ -40,6 +40,9 @@ import Profile from "../pages/Dashboard/Profile";
 import Settings from "../pages/Dashboard/Settings";
 import Auth from "../pages/Auth/Auth";
 
+import Tickets from "../pages/Dashboard/Tickets";
+import TicketDetails from "../pages/Dashboard/TicketDetails";
+
 const NotFound = () => (
   <div
     style={{
@@ -118,27 +121,47 @@ const AppRoutes = () => (
         element={<DashboardLayout />}
       >
         <Route index element={<Dashboard />} />
+
         <Route path="kyc" element={<DashboardKYC />} />
+
         <Route path="consultations" element={<Consultations />} />
+
         <Route
           path="consultations/:id"
           element={<ConsultationDetails />}
         />
+
         <Route path="calendar" element={<Calendar />} />
+
         <Route path="customers" element={<Customers />} />
+
         <Route
           path="customers/:id"
           element={<CustomerDetails />}
         />
+
         <Route path="earnings" element={<Earnings />} />
+
         <Route path="wallet" element={<Wallet />} />
+
         <Route path="reviews" element={<Reviews />} />
+
         <Route path="messages" element={<Messages />} />
+
         <Route
           path="notifications"
           element={<Notifications />}
         />
+
+        <Route path="tickets" element={<Tickets />} />
+
+        <Route
+          path="tickets/:ticketId"
+          element={<TicketDetails />}
+        />
+
         <Route path="profile" element={<Profile />} />
+
         <Route path="settings" element={<Settings />} />
       </Route>
     </Route>

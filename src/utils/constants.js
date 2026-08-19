@@ -25,6 +25,9 @@ export const DASHBOARD_NAV = [
   { key: 'reviews', label: 'Reviews', path: '/dashboard/reviews', icon: 'Star' },
   { key: 'notifications', label: 'Notifications', path: '/dashboard/notifications', icon: 'Bell' },
   { key: 'kyc', label: 'KYC', path: '/dashboard/kyc', icon: 'ShieldCheck' },
+
+  { key: 'tickets', label: 'Tickets', path: '/dashboard/tickets', icon: 'Ticket' },
+
   { key: 'profile', label: 'Profile', path: '/dashboard/profile', icon: 'User' },
   { key: 'settings', label: 'Settings', path: '/dashboard/settings', icon: 'Settings' },
 ];

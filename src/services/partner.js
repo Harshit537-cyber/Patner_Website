@@ -149,3 +149,26 @@ export const respondToBooking = async (bookingId, action) => {
 export const getPartnerRejectedBookings = async () => {
   return await api.get("/bookings/partner/rejected");
 };
+// ==========================================
+// CREATE TICKET
+// ==========================================
+
+export const createTicket = async (data) => {
+  return await api.post("/tickets/create", data);
+};
+
+// ==========================================
+// GET MY TICKETS
+// ==========================================
+
+export const getMyTickets = async () => {
+  return await api.get("/tickets/my-tickets");
+};
+
+// ==========================================
+// GET TICKET BY ID
+// ==========================================
+
+export const getTicketById = async (ticketId) => {
+  return await api.get(`/tickets/${ticketId}`);
+};
