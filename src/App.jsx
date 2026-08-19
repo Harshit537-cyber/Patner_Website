@@ -8,16 +8,6 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <PartnerProvider>
-          <div
-            id="firebase-recaptcha-container"
-            style={{
-              width: "100%",
-              minHeight: "78px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          />
 
           <AppRoutes />
         </PartnerProvider>

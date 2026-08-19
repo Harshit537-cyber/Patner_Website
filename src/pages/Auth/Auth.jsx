@@ -48,9 +48,7 @@ const Auth = () => {
         return recaptchaVerifierRef.current;
       }
 
-      const container = document.getElementById(
-        "firebase-recaptcha-container"
-      );
+      const container = document.getElementById("firebase-recaptcha-container");
 
       if (!container) {
         throw new Error("Firebase reCAPTCHA container not found.");
@@ -74,7 +72,7 @@ const Auth = () => {
               recaptchaVerifierRef.current = null;
             }
           },
-        }
+        },
       );
 
       recaptchaVerifierRef.current = verifier;
@@ -156,9 +154,7 @@ const Auth = () => {
     } catch (error) {
       console.error("OTP Error:", error);
 
-      setPhoneError(
-        error?.message || "Failed to send OTP. Please try again."
-      );
+      setPhoneError(error?.message || "Failed to send OTP. Please try again.");
 
       // a failed send leaves a stale/expired verifier behind — drop it so
       // the next attempt builds a fresh one instead of silently failing
@@ -239,7 +235,7 @@ const Auth = () => {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute right-20 top-24 h-20 w-20 rounded-full bg-violet-100/70 blur-xl"
+            className="absolute right-20 top-24 h-20 w-20 rounded-full bg-violet-100/70 blur-xl "
           />
 
           <div className="relative z-10 flex w-full flex-col justify-between p-12 xl:p-16">
@@ -364,8 +360,8 @@ const Auth = () => {
             </AnimatePresence>
 
             <p className="font-serif text-sm italic text-slate-400">
-              "Every chart tells a story. Every expert helps someone
-              understand theirs."
+              "Every chart tells a story. Every expert helps someone understand
+              theirs."
             </p>
           </div>
         </div>
@@ -537,9 +533,8 @@ const Auth = () => {
 
                   <div
                     id="firebase-recaptcha-container"
-                    className="flex justify-center"
+                    className="absolute h-0 w-0 overflow-hidden"
                   />
-
                   {/* BUTTON */}
 
                   <motion.button
