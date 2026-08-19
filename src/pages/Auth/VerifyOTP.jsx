@@ -149,9 +149,7 @@ const VerifyOtp = () => {
     } catch (error) {
       console.error("Verify OTP Error:", error);
 
-      setOtpError(
-        error?.message || "That code didn't work. Please try again."
-      );
+      setOtpError(error?.message || "That code didn't work. Please try again.");
 
       setDigits(Array(OTP_LENGTH).fill(""));
       focusInput(0);
@@ -266,8 +264,8 @@ const VerifyOtp = () => {
               </h2>
 
               <p className="mt-7 text-sm leading-7 text-slate-500">
-                We've sent a 6-digit verification code to your mobile
-                number. Enter it to{" "}
+                We've sent a 6-digit verification code to your mobile number.
+                Enter it to{" "}
                 {isRegistration
                   ? "start building your partner profile."
                   : "get back to your dashboard."}
@@ -275,8 +273,8 @@ const VerifyOtp = () => {
             </motion.div>
 
             <p className="font-serif text-sm italic text-slate-400">
-              "Every chart tells a story. Every expert helps someone
-              understand theirs."
+              "Every chart tells a story. Every expert helps someone understand
+              theirs."
             </p>
           </div>
         </div>
@@ -368,16 +366,14 @@ const VerifyOtp = () => {
                         maxLength={1}
                         value={digit}
                         disabled={loading}
-                        onChange={(e) =>
-                          handleChange(index, e.target.value)
-                        }
+                        onChange={(e) => handleChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         className={`h-14 w-full max-w-[52px] rounded-2xl border bg-white text-center text-xl font-bold text-slate-800 outline-none transition-all ${
                           otpError
                             ? "border-red-300 ring-4 ring-red-100"
                             : digit
-                            ? "border-violet-400 ring-4 ring-violet-500/10"
-                            : "border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
+                              ? "border-violet-400 ring-4 ring-violet-500/10"
+                              : "border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10"
                         }`}
                       />
                     ))}
