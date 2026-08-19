@@ -119,45 +119,52 @@ const Tickets = () => {
   return (
     <div className="tickets-page">
       <div className="tickets-header">
-        <div>
-          <h1>My Tickets</h1>
-          <p>Manage your support tickets and requests.</p>
+        <div className="tickets-header-info">
+          <span className="eyebrow-badge">
+            <span className="eyebrow-spark">✦</span> Helpdesk & Support
+          </span>
+          <h1 className="tickets-title">My Tickets</h1>
+          <p className="tickets-subtitle">
+            Manage your support tickets and track active requests in real-time.
+          </p>
         </div>
 
         <button
           className="create-ticket-btn"
           onClick={() => setShowForm((prev) => !prev)}
         >
-          {showForm ? "Close Form" : "+ Raise New Ticket"}
+          {showForm ? "✕ Close Form" : "+ Raise New Ticket"}
         </button>
       </div>
 
       {showForm && (
         <div className="ticket-form-card">
-          <h2>Raise New Ticket</h2>
+          <div className="block-top-glow" />
+          <div className="form-header">
+            <h2>Raise New Ticket</h2>
+            <p>Our support team usually responds within 24 hours.</p>
+          </div>
 
           <form onSubmit={handleCreateTicket}>
             <div className="form-group">
               <label>Subject</label>
-
               <input
                 type="text"
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                placeholder="Enter ticket subject"
+                placeholder="Brief summary of your issue..."
                 required
               />
             </div>
 
             <div className="form-group">
               <label>Description</label>
-
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Describe your issue..."
+                placeholder="Describe your issue in detail..."
                 rows="5"
                 required
               />
@@ -168,7 +175,7 @@ const Tickets = () => {
               className="submit-ticket-btn"
               disabled={submitting}
             >
-              {submitting ? "Creating..." : "Create Ticket"}
+              {submitting ? "Creating..." : "Submit Ticket ↗"}
             </button>
           </form>
         </div>
@@ -176,32 +183,33 @@ const Tickets = () => {
 
       <div className="tickets-card">
         <div className="tickets-card-header">
-          <h2>All Tickets</h2>
+          <h2>All Active Tickets</h2>
 
-          <span>
-            {loading ? "Loading..." : `${tickets.length} Tickets`}
+          <span className="tickets-count-badge">
+            {loading ? "Loading..." : `${tickets.length} Total`}
           </span>
         </div>
 
         {loading ? (
           <div className="tickets-loading">
-            Loading tickets...
+            <div className="loading-spinner" />
+            <span>Fetching your tickets...</span>
           </div>
         ) : tickets.length === 0 ? (
           <div className="no-tickets">
             <div className="no-tickets-icon">🎫</div>
 
-            <h3>No Tickets Found</h3>
+            <h3>No Support Tickets Found</h3>
 
             <p>
-              You haven't raised any support tickets yet.
+              You haven't raised any support tickets yet. Need help with something?
             </p>
 
             <button
               className="create-ticket-btn"
               onClick={() => setShowForm(true)}
             >
-              Raise Your First Ticket
+              + Raise Your First Ticket
             </button>
           </div>
         ) : (
@@ -216,8 +224,11 @@ const Tickets = () => {
                   )
                 }
               >
+                <div className="block-top-glow" />
                 <div className="ticket-main">
-                  <div className="ticket-icon">🎫</div>
+                  <div className="ticket-icon-box">
+                    <span>🎫</span>
+                  </div>
 
                   <div className="ticket-content">
                     <h3>
@@ -231,7 +242,7 @@ const Tickets = () => {
 
                     <div className="ticket-meta">
                       <span className="ticket-date">
-                        {formatDate(ticket.createdAt)}
+                        📅 {formatDate(ticket.createdAt)}
                       </span>
 
                       {ticket.category && (
@@ -242,7 +253,7 @@ const Tickets = () => {
 
                       {ticket.priority && (
                         <span className="ticket-priority">
-                          {ticket.priority}
+                          ⚡ {ticket.priority}
                         </span>
                       )}
                     </div>
@@ -259,7 +270,18 @@ const Tickets = () => {
                   </span>
 
                   <span className="view-ticket">
-                    View Details →
+                    View Details
+                    <div className="arrow-circle">
+                      <svg
+                        className="block-arrow"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </span>
                 </div>
               </div>
