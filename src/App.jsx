@@ -8,14 +8,14 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <PartnerProvider>
+          {/* Top spacing remove karne ke liye container ko hide kar diya gaya hai */}
           <div
             id="firebase-recaptcha-container"
             style={{
-              width: "100%",
-              minHeight: "78px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display: "none",
+              height: "0px",
+              width: "0px",
+              overflow: "hidden",
             }}
           />
 

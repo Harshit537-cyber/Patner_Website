@@ -51,7 +51,7 @@ const getRecaptcha = async () => {
         auth,
         RECAPTCHA_CONTAINER,
         {
-          size: "normal",
+          size: "invisible",
 
           callback: () => {
             console.log(
