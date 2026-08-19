@@ -79,10 +79,11 @@ const AppRoutes = () => (
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/create-profile" element={<CreateProfile />} />
+      
     </Route>
 
     <Route element={<ProtectedRoute />}>
+    <Route path="/create-profile" element={<CreateProfile />} />
       <Route
         path="/onboarding/personal-details"
         element={<PersonalDetails />}
