@@ -17,17 +17,12 @@ export const APPLICATION_STATUS = {
 export const DASHBOARD_NAV = [
   { key: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard' },
   { key: 'consultations', label: 'Consultations', path: '/dashboard/consultations', icon: 'MessageCircle' },
-  { key: 'calendar', label: 'Calendar', path: '/dashboard/calendar', icon: 'Calendar' },
-  { key: 'customers', label: 'Customers', path: '/dashboard/customers', icon: 'Users' },
   { key: 'messages', label: 'Chat', path: '/dashboard/messages', icon: 'MessageSquare' },
   { key: 'earnings', label: 'Earnings', path: '/dashboard/earnings', icon: 'TrendingUp' },
   { key: 'wallet', label: 'Withdrawals', path: '/dashboard/wallet', icon: 'Wallet' },
-  { key: 'reviews', label: 'Reviews', path: '/dashboard/reviews', icon: 'Star' },
   { key: 'notifications', label: 'Notifications', path: '/dashboard/notifications', icon: 'Bell' },
   { key: 'kyc', label: 'KYC', path: '/dashboard/kyc', icon: 'ShieldCheck' },
-
   { key: 'tickets', label: 'Tickets', path: '/dashboard/tickets', icon: 'Ticket' },
-
   { key: 'profile', label: 'Profile', path: '/dashboard/profile', icon: 'User' },
   { key: 'settings', label: 'Settings', path: '/dashboard/settings', icon: 'Settings' },
 ];

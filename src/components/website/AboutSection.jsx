@@ -32,13 +32,13 @@ const AboutSection = () => {
 
   return (
     <section className="about-editorial-section">
-      {/* Background Subtle Ambient Glows */}
+      {/* Subtle Background Glows */}
       <div className="editorial-glow orb-1" />
       <div className="editorial-glow orb-2" />
 
       <div className="container about-editorial-grid">
         
-        {/* LEFT VISUAL: FLOATING LUXURY FEATURE MATRIX */}
+        {/* LEFT VISUAL STAGE */}
         <motion.div 
           className="about-left-stage"
           initial="hidden"
@@ -47,13 +47,13 @@ const AboutSection = () => {
           custom={0.1}
           variants={fadeInUp}
         >
-          {/* Subtle Sacred Geometric Rings */}
+          {/* Sacred Geometric Background Rings */}
           <div className="editorial-astro-rings">
             <div className="ring-outer" />
             <div className="ring-inner" />
           </div>
 
-          {/* Staggered Vertical Feature Pillars */}
+          {/* Vertical Feature Pillars */}
           <div className="feature-matrix-wrapper">
             {featurePillars.map((item, idx) => (
               <motion.div 
@@ -74,14 +74,14 @@ const AboutSection = () => {
               </motion.div>
             ))}
 
-            {/* Floating Live Badge Overlay */}
+            {/* Floating Trust Badge */}
             <motion.div 
               className="editorial-trust-chip"
               animate={{ y: [0, -6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
               <span className="chip-symbol">✨</span>
-              <div>
+              <div className="chip-text">
                 <strong>AstroNarhari Direct</strong>
                 <small>100% Transparent Platform</small>
               </div>
@@ -89,13 +89,13 @@ const AboutSection = () => {
           </div>
         </motion.div>
 
-        {/* RIGHT CONTENT: HIGH-IMPACT EDITORIAL STORY */}
+        {/* RIGHT EDITORIAL STORY */}
         <div className="about-right-body">
           <motion.div 
             className="eyebrow-badge"
             custom={0.1}
             initial="hidden"
-            whileInView="visible"
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             variants={fadeInUp}
           >

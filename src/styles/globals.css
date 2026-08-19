@@ -63,3 +63,17 @@ input, select, textarea {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
+/* Scrollbar hide karne ke liye */
+html, body {
+  /* Firefox ke liye */
+  scrollbar-width: none; 
+  
+  /* Internet Explorer & Edge ke liye */
+  -ms-overflow-style: none; 
+}
+
+/* Chrome, Safari, aur Opera ke liye */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}

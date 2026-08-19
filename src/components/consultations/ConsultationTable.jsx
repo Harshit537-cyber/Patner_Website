@@ -2,35 +2,67 @@ import { Link } from 'react-router-dom';
 import Badge from '../common/Badge';
 import { formatDateTime, formatCurrency } from '../../utils/formatters';
 
-const statusTone = { upcoming: 'neutral', completed: 'success', cancelled: 'error' };
+const statusTone = {
+  pending: 'neutral',
+  accepted: 'success',
+  rejected: 'error',
+};
 
-const ConsultationTable = ({ consultations = [] }) => (
-  <table className="data-table">
-    <thead>
-      <tr>
-        <th>Customer</th>
-        <th>Type</th>
-        <th>Date & time</th>
-        <th>Amount</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {consultations.map((c) => (
-        <tr key={c.id}>
-          <td>
-            <Link to={`/dashboard/consultations/${c.id}`} style={{ fontWeight: 600, color: 'var(--color-heading)' }}>
-              {c.customer}
-            </Link>
-          </td>
-          <td>{c.type}</td>
-          <td>{formatDateTime(c.date)}</td>
-          <td>{formatCurrency(c.amount)}</td>
-          <td><Badge tone={statusTone[c.status] || 'neutral'}>{c.status}</Badge></td>
+const ConsultationTable = ({ consultations = [] }) => {
+  return (
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Type</th>
+          <th>Date & Time</th>
+          <th>Duration</th>
+          <th>Amount</th>
+          <th>Status</th>
         </tr>
-      ))}
-    </tbody>
-  </table>
-);
+      </thead>
+
+      <tbody>
+        {consultations.map((booking) => (
+          <tr key={booking._id}>
+            <td>
+              <Link
+                to={`/dashboard/consultations/${booking._id}`}
+                style={{
+                  fontWeight: 600,
+                  color: 'var(--color-heading)',
+                }}
+              >
+                {booking.user?.name || 'Unknown'}
+              </Link>
+            </td>
+
+            <td>
+              {booking.mode || '-'}
+            </td>
+
+            <td>
+              {formatDateTime(booking.date)}
+            </td>
+
+            <td>
+              {booking.duration} min
+            </td>
+
+            <td>
+              {formatCurrency(booking.totalFee || 0)}
+            </td>
+
+            <td>
+              <Badge tone={statusTone[booking.status] || 'neutral'}>
+                {booking.status}
+              </Badge>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 export default ConsultationTable;
