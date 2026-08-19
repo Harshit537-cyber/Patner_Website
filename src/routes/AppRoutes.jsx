@@ -42,6 +42,7 @@ import Auth from "../pages/Auth/Auth";
 
 import Tickets from "../pages/Dashboard/Tickets";
 import TicketDetails from "../pages/Dashboard/TicketDetails";
+import CreateProfile from "../pages/Auth/CreateProfile";
 
 const NotFound = () => (
   <div
@@ -78,6 +79,7 @@ const AppRoutes = () => (
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/create-profile" element={<CreateProfile />} />
     </Route>
 
     <Route element={<ProtectedRoute />}>
