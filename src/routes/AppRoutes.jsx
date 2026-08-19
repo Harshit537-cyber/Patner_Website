@@ -38,6 +38,7 @@ import Messages from "../pages/Dashboard/Messages";
 import Notifications from "../pages/Dashboard/Notifications";
 import Profile from "../pages/Dashboard/Profile";
 import Settings from "../pages/Dashboard/Settings";
+import Auth from "../pages/Auth/Auth";
 
 const NotFound = () => (
   <div
@@ -70,7 +71,7 @@ const AppRoutes = () => (
 
     <Route element={<PublicRoute />}>
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/register" element={<Auth />} />
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />

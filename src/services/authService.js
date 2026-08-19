@@ -3,7 +3,7 @@ import {
   signInWithPhoneNumber,
 } from "firebase/auth";
 
-import { auth } from "../firebase";
+import { auth } from "../firebase/firebase";
 import { api } from "./api";
 
 let confirmationResult = null;
