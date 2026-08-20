@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 import { auth } from "../../firebase/firebase";
-import  api  from "../../services/api";
+import api from "../../services/api";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -13,8 +13,7 @@ const Auth = () => {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
 
-  const [confirmationResult, setConfirmationResult] =
-    useState(null);
+  const [confirmationResult, setConfirmationResult] = useState(null);
 
   const [step, setStep] = useState("phone");
 
@@ -31,22 +30,16 @@ const Auth = () => {
       setLoading(true);
       setError("");
 
-      const formattedPhone = phone.startsWith("+")
-        ? phone
-        : `+91${phone}`;
+      const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
 
-      const recaptcha = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "invisible",
-        }
-      );
+      const recaptcha = new RecaptchaVerifier(auth, "recaptcha-container", {
+        size: "invisible",
+      });
 
       const result = await signInWithPhoneNumber(
         auth,
         formattedPhone,
-        recaptcha
+        recaptcha,
       );
 
       setConfirmationResult(result);
@@ -57,9 +50,7 @@ const Auth = () => {
     } catch (error) {
       console.error("Send OTP Error:", error);
 
-      setError(
-        error?.message || "Failed to send OTP"
-      );
+      setError(error?.message || "Failed to send OTP");
     } finally {
       setLoading(false);
     }
@@ -72,73 +63,41 @@ const Auth = () => {
   const verifyOtp = async () => {
     try {
       setLoading(true);
-      setError("");
 
-      if (!confirmationResult) {
-        setError("Please request OTP again.");
-        return;
+      const firebaseUser = auth.currentUser;
+
+      if (!firebaseUser) {
+        throw new Error("Firebase user not found");
       }
 
-      // Firebase OTP verification
-      const result =
-        await confirmationResult.confirm(otp);
-
-      // Firebase ID Token
-      const idToken =
-        await result.user.getIdToken(true);
+      const idToken = await firebaseUser.getIdToken(true);
 
       console.log("Firebase ID Token:", idToken);
 
-      // Backend verify OTP API
-      const response = await api.post(
-        "/partner/verify-otp",
-        {
-          idToken,
-          role: mode === "register"
-            ? "partner"
-            : undefined,
-        }
-      );
+      const response = await api.post("/partner/verify-otp", {
+        idToken,
+      });
 
-      console.log(
-        "Backend Verify Response:",
-        response
-      );
+      console.log("Backend Verify Response:", response);
 
-      if (!response?.success) {
-        throw new Error(
-          response?.message ||
-            "Authentication failed"
-        );
+      // Axios response ke andar actual backend response
+      const result = response.data;
+
+      if (!result.success) {
+        throw new Error(result.message || "Authentication failed");
       }
 
-      // =================================================
-      // SAVE TOKEN
-      // =================================================
+      // Token save
+      localStorage.setItem("partnerToken", result.token);
 
-      if (response.token) {
-        localStorage.setItem(
-          "partnerToken",
-          response.token
-        );
-      }
+      // Partner data save
+      localStorage.setItem("partnerUser", JSON.stringify(result.data));
 
-      // =================================================
-      // SAVE USER
-      // =================================================
+      console.log("Authentication successful");
+      console.log("Partner:", result.data);
 
-      if (response.data) {
-        localStorage.setItem(
-          "partnerUser",
-          JSON.stringify(response.data)
-        );
-      }
-
-      // =================================================
-      // NAVIGATION
-      // =================================================
-
-      if (mode === "login") {
+      // Profile complete hai ya nahi
+      if (result.data.isProfileComplete) {
         navigate("/dashboard", {
           replace: true,
         });
@@ -147,17 +106,13 @@ const Auth = () => {
           replace: true,
         });
       }
-
     } catch (error) {
-      console.error(
-        "Verify OTP Error:",
-        error
-      );
+      console.error("Verify OTP Error:", error);
 
       setError(
         error?.response?.data?.message ||
           error?.message ||
-          "Invalid OTP"
+          "OTP verification failed",
       );
     } finally {
       setLoading(false);
@@ -170,9 +125,7 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-
         {/* TITLE */}
 
         <h1 className="text-2xl font-bold text-slate-900">
@@ -190,7 +143,6 @@ const Auth = () => {
         {step === "phone" && (
           <>
             <div className="mt-6 flex gap-2">
-
               <button
                 type="button"
                 onClick={() => {
@@ -220,7 +172,6 @@ const Auth = () => {
               >
                 Register
               </button>
-
             </div>
 
             {/* PHONE */}
@@ -228,9 +179,7 @@ const Auth = () => {
             <input
               type="tel"
               value={phone}
-              onChange={(e) =>
-                setPhone(e.target.value)
-              }
+              onChange={(e) => setPhone(e.target.value)}
               placeholder="Enter mobile number"
               className="mt-6 h-12 w-full rounded-lg border border-slate-200 px-4 outline-none focus:border-violet-500"
             />
@@ -243,9 +192,7 @@ const Auth = () => {
               disabled={loading}
               className="mt-4 h-12 w-full rounded-lg bg-violet-600 font-semibold text-white disabled:opacity-50"
             >
-              {loading
-                ? "Sending OTP..."
-                : "Send OTP"}
+              {loading ? "Sending OTP..." : "Send OTP"}
             </button>
           </>
         )}
@@ -261,9 +208,7 @@ const Auth = () => {
             <input
               type="text"
               value={otp}
-              onChange={(e) =>
-                setOtp(e.target.value)
-              }
+              onChange={(e) => setOtp(e.target.value)}
               placeholder="Enter OTP"
               maxLength={6}
               className="mt-4 h-12 w-full rounded-lg border border-slate-200 px-4 text-center tracking-[0.5em] outline-none focus:border-violet-500"
@@ -275,9 +220,7 @@ const Auth = () => {
               disabled={loading}
               className="mt-4 h-12 w-full rounded-lg bg-violet-600 font-semibold text-white disabled:opacity-50"
             >
-              {loading
-                ? "Verifying..."
-                : "Verify OTP"}
+              {loading ? "Verifying..." : "Verify OTP"}
             </button>
 
             <button
@@ -305,7 +248,6 @@ const Auth = () => {
         {/* RECAPTCHA */}
 
         <div id="recaptcha-container" />
-
       </div>
     </div>
   );
