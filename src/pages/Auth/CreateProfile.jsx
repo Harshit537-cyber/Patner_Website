@@ -43,17 +43,14 @@ const LANGUAGES = [
   "Malayalam",
 ];
 
-const CATEGORIES = [
-  "Astrology",
-  "Numerology",
-  "Tarot",
-  "Palmistry",
-  "Vastu",
-  "Spirituality",
-  "Relationship",
-  "Career",
-  "Finance",
-];
+
+const CATEGORIES=[
+            'LOVE & RELATIONSHIPS',
+            'CAREER & FINANCE',
+            'MARRIAGE & FAMILY',
+            'HEALTH & WELLNESS',
+            'BUSINESS & WEALTH'
+        ]
 
 const CreateProfile = () => {
   const navigate = useNavigate();
