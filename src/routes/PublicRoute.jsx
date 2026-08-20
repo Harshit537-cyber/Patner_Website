@@ -1,8 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 
 const PublicRoute = () => {
-  const { user } = useAuth();
+  const { user } = JSON.parse(localStorage.getItem('user'));
   if (user) return <Navigate to="/dashboard" replace />;
   return <Outlet />;
 };

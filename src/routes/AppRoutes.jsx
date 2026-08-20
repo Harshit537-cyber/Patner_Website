@@ -8,9 +8,7 @@ import FAQ from "../pages/Website/FAQ";
 import Contact from "../pages/Website/Contact";
 
 import PublicRoute from "./PublicRoute";
-import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import VerifyOTP from "../pages/Auth/VerifyOTP";
 import ForgotPassword from "../pages/Auth/ForgotPassword";
 import ResetPassword from "../pages/Auth/ResetPassword";
 
@@ -76,7 +74,6 @@ const AppRoutes = () => (
     <Route element={<PublicRoute />}>
       <Route path="/login" element={<Auth />} />
       <Route path="/register" element={<Auth />} />
-      <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       

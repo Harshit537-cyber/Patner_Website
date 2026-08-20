@@ -2,7 +2,6 @@ import { Menu, Bell, ChevronDown, LogOut, User, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useNotifications } from '../../hooks/useNotifications';
-import { useAuth } from '../../hooks/useAuth';
 import './Topbar.css';
 
 const Topbar = ({ title, onMenuClick }) => {

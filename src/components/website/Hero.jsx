@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import Button from '../common/Button';
-import './Hero.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Button from "../common/Button";
+import "./Hero.css";
 
 const Hero = () => {
   const fadeInUp = {
@@ -10,8 +10,8 @@ const Hero = () => {
     visible: (delay = 0) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }
-    })
+      transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
+    }),
   };
 
   return (
@@ -19,7 +19,7 @@ const Hero = () => {
       <div className="container hero-inner">
         {/* LEFT COPY */}
         <div className="hero-copy">
-          <motion.div 
+          <motion.div
             className="eyebrow-badge"
             custom={0.1}
             initial="hidden"
@@ -30,40 +30,47 @@ const Hero = () => {
             <span className="eyebrow">For practicing astrologers</span>
           </motion.div>
 
-          <motion.h1 
+          <motion.h1
             className="hero-title"
             custom={0.2}
             initial="hidden"
             animate="visible"
             variants={fadeInUp}
           >
-            Your practice, held together in <span className="highlight-text">one calm dashboard.</span>
+            Your practice, held together in{" "}
+            <span className="highlight-text">one calm dashboard.</span>
           </motion.h1>
 
-          <motion.p 
+          <motion.p
             className="hero-sub"
             custom={0.3}
             initial="hidden"
             animate="visible"
             variants={fadeInUp}
           >
-            Take consultations from clients across the country, manage your calendar
-            on your own terms, and get paid out weekly — without running a business
-            on the side.
+            Take consultations from clients across the country, manage your
+            calendar on your own terms, and get paid out weekly — without
+            running a business on the side.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             className="hero-cta"
             custom={0.4}
             initial="hidden"
             animate="visible"
             variants={fadeInUp}
           >
-            <Link to="/register"><Button size="lg">Become a Partner</Button></Link>
-            <Link to="/how-it-works"><Button size="lg" variant="outline">See how it works</Button></Link>
+            <Link to="/register">
+              <Button size="lg">Become a Partner</Button>
+            </Link>
+            <Link to="/how-it-works">
+              <Button size="lg" variant="outline">
+                See how it works
+              </Button>
+            </Link>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="hero-stats-row"
             custom={0.5}
             initial="hidden"
@@ -89,7 +96,7 @@ const Hero = () => {
 
         {/* RIGHT VISUAL - VEDIC ASTRO WHEEL */}
         <div className="hero-visual" aria-hidden="true">
-          <motion.div 
+          <motion.div
             className="astro-stage"
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}

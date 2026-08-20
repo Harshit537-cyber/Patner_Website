@@ -1,123 +1,196 @@
-import { createContext, useState, useEffect } from "react";
-import { storage } from "../utils/storage";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import {
-  sendOtp,
-  verifyOtp as firebaseVerifyOtp,
-  clearAuthSession,
-} from "../services/authService";
+import { signOut, signInWithPhoneNumber } from "firebase/auth";
 
-export const AuthContext = createContext(null);
+import { auth } from "../firebase/firebase";
+import api from "../services/api";
+
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => storage.get("user"));
-  const [loading, setLoading] = useState(false);
-  const [pendingPhone, setPendingPhone] = useState("");
-
-  useEffect(() => {
-    if (user) {
-      storage.set("user", user);
-    } else {
-      storage.remove("user");
-    }
-  }, [user]);
-
-  const login = async ({ phone }) => {
-    setLoading(true);
-
+  const [user, setUser] = useState(() => {
     try {
-      const result = await sendOtp(phone);
+      const savedUser = localStorage.getItem("partnerUser");
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  });
 
-      setPendingPhone(result.phone);
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem("partnerToken") || null;
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const [confirmationResult, setConfirmationResult] = useState(null);
+
+  /* =====================================================
+     SEND OTP
+  ===================================================== */
+
+  const sendOtp = async (phone, appVerifier) => {
+    try {
+      setLoading(true);
+
+      const formattedPhone = phone.startsWith("+") ? phone : `+91${phone}`;
+
+      const result = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        appVerifier,
+      );
+
+      setConfirmationResult(result);
 
       return result;
     } catch (error) {
-      console.error("Login OTP Error:", error);
+      console.error("Send OTP Error:", error);
       throw error;
     } finally {
       setLoading(false);
     }
   };
 
-const verifyOtp = async (otp) => {
-  setLoading(true);
+  /* =====================================================
+     VERIFY OTP
+  ===================================================== */
 
-  try {
-    console.log("========== VERIFY OTP START ==========");
+  const verifyOtp = async (otp) => {
+    try {
+      if (!confirmationResult) {
+        throw new Error("OTP session expired. Please request a new OTP.");
+      }
 
-    const result = await firebaseVerifyOtp(otp);
+      setLoading(true);
 
-    const firebaseUser = result.user;
-    const partnerToken = result.token;
+      // Firebase OTP verification
+      const credential = await confirmationResult.confirm(otp);
 
-    console.log("✅ Firebase user:", firebaseUser);
-    console.log("✅ Partner Token:", partnerToken);
+      // Firebase ID token
+      const idToken = await credential.user.getIdToken(true);
 
-    if (partnerToken) {
-      localStorage.setItem(
-        "partnerToken",
-        partnerToken
+      // Backend verification
+      const response = await api.post("/partner/verify-otp", {
+        idToken,
+      });
+
+      const responseData = response.data;
+
+      if (!responseData.success) {
+        throw new Error(responseData.message || "Authentication failed");
+      }
+
+      const backendToken = responseData.token;
+      const partner = responseData.data;
+
+      // Save authentication
+      localStorage.setItem("partnerToken", backendToken);
+
+      localStorage.setItem("partnerUser", JSON.stringify(partner));
+
+      setToken(backendToken);
+      setUser(partner);
+
+      // OTP session no longer needed
+      setConfirmationResult(null);
+
+      return responseData;
+    } catch (error) {
+      console.error("Verify OTP Error:", error);
+
+      throw new Error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "OTP verification failed",
       );
-
-      console.log(
-        "✅ partnerToken saved to localStorage"
-      );
-    } else {
-      console.warn(
-        "⚠️ Partner token was not returned by backend"
-      );
+    } finally {
+      setLoading(false);
     }
-
-    const newUser = {
-      id: firebaseUser.uid,
-      uid: firebaseUser.uid,
-      phone: firebaseUser.phoneNumber || pendingPhone,
-      name: "New Partner",
-      applicationStatus: "pending",
-    };
-
-    setUser(newUser);
-
-    console.log(
-      "Stored partnerToken:",
-      localStorage.getItem("partnerToken")
-    );
-
-    return {
-      ...newUser,
-      token: partnerToken,
-      firebaseToken: result.firebaseToken,
-    };
-  } catch (error) {
-    console.error(
-      "❌ Verify OTP Error:",
-      error
-    );
-
-    throw error;
-  } finally {
-    setLoading(false);
-  }
-};
-
-  const logout = () => {
-    clearAuthSession();
-    setUser(null);
-    setPendingPhone("");
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        loading,
-        login,
-        verifyOtp,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  /* =====================================================
+     LOGOUT
+  ===================================================== */
+
+  const logout = async () => {
+    try {
+      setLoading(true);
+
+      if (token) {
+        try {
+          await api.post(
+            "/partner/logout",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+        } catch (error) {
+          console.error("Backend logout error:", error);
+        }
+      }
+
+      await signOut(auth);
+
+      localStorage.removeItem("partnerToken");
+      localStorage.removeItem("partnerUser");
+
+      setToken(null);
+      setUser(null);
+      setConfirmationResult(null);
+    } catch (error) {
+      console.error("Logout Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =====================================================
+     CLEAR AUTH
+  ===================================================== */
+
+  useEffect(() => {
+    const handleStorage = () => {
+      const savedToken = localStorage.getItem("partnerToken");
+
+      const savedUser = localStorage.getItem("partnerUser");
+
+      setToken(savedToken);
+
+      setUser(savedUser ? JSON.parse(savedUser) : null);
+    };
+
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
+
+  const value = {
+    user,
+    token,
+    loading,
+
+    sendOtp,
+    verifyOtp,
+    logout,
+
+    isAuthenticated: !!token && !!user,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
 };
