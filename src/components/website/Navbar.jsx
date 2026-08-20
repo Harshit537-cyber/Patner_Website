@@ -42,26 +42,17 @@ const Navbar = () => {
 
           {/* MOBILE ONLY ACTIONS */}
           <div className="navbar-mobile-actions">
-            <Link
-              to="/login"
-              className="navbar-login"
-              onClick={() => setOpen(false)}
-            >
-              Log in
-            </Link>
-            <Link to="/register" onClick={() => setOpen(false)}>
-              <Button size="sm">Become a Partner</Button>
+            
+            <Link to="/Login" onClick={() => setOpen(false)}>
+              <Button size="sm">Get Started</Button>
             </Link>
           </div>
         </nav>
 
         {/* DESKTOP ACTIONS */}
         <div className="navbar-actions">
-          <Link to="/login" className="navbar-login">
-            Log in
-          </Link>
-          <Link to="/register">
-            <Button size="sm">Become a Partner</Button>
+          <Link to="/login">
+            <Button size="sm">Get Started</Button>
           </Link>
         </div>
 

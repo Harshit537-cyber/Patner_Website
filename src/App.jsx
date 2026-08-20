@@ -12,18 +12,36 @@ import CreateProfile from "./pages/Auth/CreateProfile";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 
+import Home from "./pages/Website/Home";
+import WebsiteLayout from "./pages/Website/WebsiteLayout";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* ================= PUBLIC ROUTES ================= */}
+        {/* =========================================
+            PUBLIC ROUTES
+        ========================================= */}
 
         <Route element={<PublicRoute />}>
-          <Route path="/" element={<Auth />} />
+
+          {/* WEBSITE LAYOUT */}
+          <Route element={<WebsiteLayout />}>
+
+            <Route path="/home" element={<Home />}/>
+
+          </Route>
+
+          {/* AUTH */}
+          <Route path="/login" element={<Auth />}/>
+
         </Route>
 
-        {/* ================= PROTECTED ROUTES ================= */}
+
+        {/* =========================================
+            PROTECTED ROUTES
+        ========================================= */}
 
         <Route element={<ProtectedRoute />}>
 
@@ -39,11 +57,14 @@ function App() {
 
         </Route>
 
-        {/* ================= FALLBACK ================= */}
+
+        {/* =========================================
+            FALLBACK
+        ========================================= */}
 
         <Route
           path="*"
-          element={<Navigate to="/" replace />}
+          element={<Navigate to="/home" replace />}
         />
 
       </Routes>
