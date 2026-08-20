@@ -7,3 +7,8 @@ export const verifyOtp = (data) => {
 export const registerPartner = (data) => {
   return api.post("/partner/register", data);
 };
+
+
+export const getPartnerById= (id)=>{
+  return api.get(`/partner/astrologerById/${id}`)
+}

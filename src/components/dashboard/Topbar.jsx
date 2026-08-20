@@ -6,14 +6,13 @@ import './Topbar.css';
 
 const Topbar = ({ title, onMenuClick }) => {
   const { unreadCount = 0 } = useNotifications() || {};
-  const { user, logout } = useAuth() || {};
-
+const user = JSON.parse(localStorage.getItem('partnerUser'))
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   // Dynamic user details with fallback
-  const userName = user?.name || 'Radhika Sharma';
+  const userName = user?.name || "User's name";
   const userEmail = user?.email || 'radhika@example.com';
   
   // Get Initials from Name
