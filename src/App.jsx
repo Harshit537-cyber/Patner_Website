@@ -14,6 +14,9 @@ import PublicRoute from "./routes/PublicRoute";
 
 import Home from "./pages/Website/Home";
 import WebsiteLayout from "./pages/Website/WebsiteLayout";
+import FAQ from "./components/website/FAQ";
+import ContactSection from "./components/website/ContactSection";
+import AboutSection from "./components/website/AboutSection";
 
 function App() {
   return (
@@ -30,6 +33,9 @@ function App() {
           <Route element={<WebsiteLayout />}>
 
             <Route path="/home" element={<Home />}/>
+            <Route path="/faq" element={<FAQ />}/>
+            <Route path="/contact" element={<ContactSection />}/>
+            <Route path="/about" element={<AboutSection />}/>
 
           </Route>
 
@@ -45,16 +51,8 @@ function App() {
 
         <Route element={<ProtectedRoute />}>
 
-          <Route
-            path="/dashboard"
-            element={<Dashboard />}
-          />
-
-          <Route
-            path="/create-profile"
-            element={<CreateProfile />}
-          />
-
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route  path="/create-profile" element={<CreateProfile />} />
         </Route>
 
 

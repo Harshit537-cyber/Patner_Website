@@ -8,7 +8,7 @@ import "./Navbar.css";
 const NAV_ITEMS = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
-  { label: "Earnings", path: "/earnings" }, // 👈 Same path
+  { label: "Earnings", path: "/earnings" },
   { label: "FAQ", path: "/faq" },
   { label: "Contact", path: "/contact" },
 ];
