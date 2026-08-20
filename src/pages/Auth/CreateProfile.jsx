@@ -185,21 +185,15 @@ const CreateProfile = () => {
     const selectedFiles = files.slice(0, remainingSlots);
 
     const invalidFile = selectedFiles.find(
-      (file) =>
-        !file.type.startsWith("image/") ||
-        file.size > 5 * 1024 * 1024,
+      (file) => !file.type.startsWith("image/") || file.size > 5 * 1024 * 1024,
     );
 
     if (invalidFile) {
-      setError(
-        "Each additional photo must be an image smaller than 5MB.",
-      );
+      setError("Each additional photo must be an image smaller than 5MB.");
       return;
     }
 
-    const previews = selectedFiles.map((file) =>
-      URL.createObjectURL(file),
-    );
+    const previews = selectedFiles.map((file) => URL.createObjectURL(file));
 
     setAdditionalPhotos((prev) => [...prev, ...selectedFiles]);
     setGalleryPreviews((prev) => [...prev, ...previews]);
@@ -214,13 +208,9 @@ const CreateProfile = () => {
   const removeGalleryImage = (index) => {
     URL.revokeObjectURL(galleryPreviews[index]);
 
-    setAdditionalPhotos((prev) =>
-      prev.filter((_, i) => i !== index),
-    );
+    setAdditionalPhotos((prev) => prev.filter((_, i) => i !== index));
 
-    setGalleryPreviews((prev) =>
-      prev.filter((_, i) => i !== index),
-    );
+    setGalleryPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   /* =====================================================
@@ -282,17 +272,6 @@ const CreateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationError = validateForm();
-
-    if (validationError) {
-      setError(validationError);
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return;
-    }
-
     try {
       setLoading(true);
       setError("");
@@ -300,59 +279,66 @@ const CreateProfile = () => {
 
       const formData = new FormData();
 
-      formData.append("fullName", form.fullName.trim());
+      // Basic details
+      formData.append("fullName", form.fullName);
       formData.append("dateOfBirth", form.dateOfBirth);
       formData.append("gender", form.gender);
-      formData.append("city", form.city.trim());
+      formData.append("city", form.city);
+
+      // Professional details
       formData.append("experience", form.experience);
-      formData.append("qualification", form.qualification.trim());
+      formData.append("qualification", form.qualification);
+
+      // Pricing
       formData.append("expectedSalary", form.expectedSalary);
       formData.append("minRate", form.minRate);
-      formData.append("bio", form.bio.trim());
 
-      // Backend does JSON.parse() on these fields
-      formData.append(
-        "specialties",
-        JSON.stringify(form.specialties),
-      );
+      // Bio
+      formData.append("bio", form.bio);
 
-      formData.append(
-        "languages",
-        JSON.stringify(form.languages),
-      );
+      // Arrays - backend uses JSON.parse()
+      formData.append("specialties", JSON.stringify(form.specialties));
 
-      formData.append(
-        "categories",
-        JSON.stringify(form.categories),
-      );
+      formData.append("languages", JSON.stringify(form.languages));
 
+      formData.append("categories", JSON.stringify(form.categories));
+
+      // Profile image
       if (profilePic) {
         formData.append("profilePic", profilePic);
       }
 
+      // Gallery images
       additionalPhotos.forEach((file) => {
         formData.append("additionalPhotos", file);
       });
 
+      console.log("========== REGISTER REQUEST ==========");
+
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value instanceof File ? value.name : value);
+      }
+
       const response = await registerPartner(formData);
 
-      console.log("Register Partner Response:", response);
+      console.log("========== REGISTER RESPONSE ==========");
+      console.log(response);
 
-      setSuccess("Your partner profile has been created successfully.");
+      if (response?.success) {
+        setSuccess(response.message || "Partner profile created successfully.");
 
-      setTimeout(() => {
-        navigate("/dashboard", {
-          replace: true,
-        });
-      }, 1200);
-    } catch (err) {
-      console.error("Create Profile Error:", err);
+        setTimeout(() => {
+          navigate("/dashboard", {
+            replace: true,
+          });
+        }, 1000);
+      } else {
+        throw new Error(response?.message || "Profile registration failed.");
+      }
+    } catch (error) {
+      console.error("Create Profile Error:", error);
 
-      setError(
-        err?.response?.data?.message ||
-          err?.message ||
-          "Unable to create your profile. Please try again.",
-      );
+      setError(error?.message || "Unable to create your profile.");
 
       window.scrollTo({
         top: 0,
@@ -362,7 +348,6 @@ const CreateProfile = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#faf9ff]">
       {/* =================================================
@@ -478,8 +463,7 @@ const CreateProfile = () => {
                 </p>
 
                 <p className="mt-1 text-xs leading-5 text-slate-400">
-                  Add a clear professional photo to help seekers recognize
-                  you.
+                  Add a clear professional photo to help seekers recognize you.
                 </p>
               </div>
 
@@ -530,9 +514,7 @@ const CreateProfile = () => {
               <div className="mt-8 border-t border-slate-100 pt-6">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-bold text-slate-900">
-                      Gallery
-                    </p>
+                    <p className="text-sm font-bold text-slate-900">Gallery</p>
 
                     <p className="text-[10px] text-slate-400">
                       Up to 4 additional photos
@@ -673,27 +655,21 @@ const CreateProfile = () => {
                     label="Specialties"
                     values={form.specialties}
                     options={SPECIALTIES}
-                    onToggle={(value) =>
-                      toggleArrayValue("specialties", value)
-                    }
+                    onToggle={(value) => toggleArrayValue("specialties", value)}
                   />
 
                   <MultiSelect
                     label="Languages"
                     values={form.languages}
                     options={LANGUAGES}
-                    onToggle={(value) =>
-                      toggleArrayValue("languages", value)
-                    }
+                    onToggle={(value) => toggleArrayValue("languages", value)}
                   />
 
                   <MultiSelect
                     label="Categories"
                     values={form.categories}
                     options={CATEGORIES}
-                    onToggle={(value) =>
-                      toggleArrayValue("categories", value)
-                    }
+                    onToggle={(value) => toggleArrayValue("categories", value)}
                   />
 
                   <div className="grid gap-5 sm:grid-cols-2">
@@ -844,13 +820,9 @@ const SectionHeader = ({ icon: Icon, title, description }) => {
       </div>
 
       <div>
-        <h3 className="text-base font-bold text-slate-900">
-          {title}
-        </h3>
+        <h3 className="text-base font-bold text-slate-900">{title}</h3>
 
-        <p className="mt-1 text-xs text-slate-400">
-          {description}
-        </p>
+        <p className="mt-1 text-xs text-slate-400">{description}</p>
       </div>
     </div>
   );
@@ -873,8 +845,7 @@ const InputField = ({
   return (
     <div>
       <label className="mb-2 block text-xs font-bold text-slate-700">
-        {label}{" "}
-        {required && <span className="text-red-500">*</span>}
+        {label} {required && <span className="text-red-500">*</span>}
       </label>
 
       <div className="relative">
@@ -913,8 +884,7 @@ const SelectField = ({
   return (
     <div>
       <label className="mb-2 block text-xs font-bold text-slate-700">
-        {label}{" "}
-        {required && <span className="text-red-500">*</span>}
+        {label} {required && <span className="text-red-500">*</span>}
       </label>
 
       <div className="relative">
@@ -944,12 +914,7 @@ const SelectField = ({
    MULTI SELECT
 ===================================================== */
 
-const MultiSelect = ({
-  label,
-  values,
-  options,
-  onToggle,
-}) => {
+const MultiSelect = ({ label, values, options, onToggle }) => {
   return (
     <div>
       <label className="mb-3 block text-xs font-bold text-slate-700">

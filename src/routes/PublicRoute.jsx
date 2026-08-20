@@ -1,8 +1,12 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoute = () => {
-  const { user } = JSON.parse(localStorage.getItem('user'));
-  if (user) return <Navigate to="/dashboard" replace />;
+  const token = localStorage.getItem("partnerToken");
+
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return <Outlet />;
 };
 
