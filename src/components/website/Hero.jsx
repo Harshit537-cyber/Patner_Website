@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Button from "../common/Button";
 import "./Hero.css";
 
@@ -14,10 +14,39 @@ const Hero = () => {
     }),
   };
 
+  const conversationFlow = [
+    { sender: "user", text: "Namaste Acharya ji! Meri job switch ki kab tak yog ban rahe hain?" },
+    { sender: "astrologer", text: "Namaste! Aapke 10th house me Jupiter ki position strong hai, August ke baad naye chances milenge." },
+    { sender: "user", text: "Kya mujhe dusre city relocate karna chahiye?" },
+    { sender: "astrologer", text: "Haan ji, foreign ya long distance connections kafi favorable hain. Confident rahiye!" },
+    { sender: "user", text: "Thank you so much! Kuch remedy batayein please." },
+    { sender: "astrologer", text: "Roz subah Surya ko jal dijiye aur kesar ka tilak lagayein. Sab accha hoga." },
+    { sender: "user", text: "Kundali me shani ki mahadasha kab khatam hogi?" },
+    { sender: "astrologer", text: "Shani ki dhaiyya abhi last phase me hai, Hanuman Chalisa ka path regular karein." }
+  ];
+
+  const [visibleCount, setVisibleCount] = useState(3);
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (visibleCount < conversationFlow.length) {
+      setIsTyping(true);
+      timer = setTimeout(() => {
+        setIsTyping(false);
+        setVisibleCount((prev) => prev + 1);
+      }, 2200);
+    } else {
+      timer = setTimeout(() => {
+        setVisibleCount(3);
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [visibleCount]);
+
   return (
     <section className="hero">
       <div className="container hero-inner">
-        {/* LEFT COPY */}
         <div className="hero-copy">
           <motion.div
             className="eyebrow-badge"
@@ -94,7 +123,6 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        {/* RIGHT VISUAL - VEDIC ASTRO WHEEL */}
         <div className="hero-visual" aria-hidden="true">
           <motion.div
             className="astro-stage"
@@ -102,39 +130,109 @@ const Hero = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            {/* Background Glow */}
             <div className="glow-aura" />
 
-            {/* Constellation Sparks */}
             <div className="star-field">
               <span className="star s1">✦</span>
               <span className="star s2">✧</span>
               <span className="star s3">✦</span>
             </div>
 
-            {/* Outer Vedic Axis Ring */}
-            <div className="ring ring-outer-vedic">
-              <div className="vedic-axis axis-v" />
-              <div className="vedic-axis axis-h" />
+            <div className="phone-device">
+              <div className="phone-speaker" />
+              <div className="phone-screen">
+                <div className="phone-status-bar">
+                  <span>9:41</span>
+                  <div className="status-icons">
+                    <span className="signal-dot" />
+                    <span className="signal-dot" />
+                    <span className="signal-dot" />
+                  </div>
+                </div>
+
+                <div className="chat-header">
+                  <div className="astrologer-avatar-container">
+                    <img 
+                      src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80" 
+                      alt="Acharya Shruti" 
+                      className="astrologer-img"
+                    />
+                    <span className="online-indicator" />
+                  </div>
+                  <div className="astrologer-meta">
+                    <h4>Acharya Shruti</h4>
+                    <p>Vedic & Tarot Expert</p>
+                  </div>
+                  <div className="live-badge">LIVE</div>
+                </div>
+
+                <div className="chat-messages-container">
+                  <AnimatePresence mode="popLayout">
+                    {conversationFlow.slice(0, visibleCount).map((msg, index) => {
+                      const isLatest = index === visibleCount - 1;
+                      return (
+                        <motion.div
+                          key={index}
+                          className={`chat-bubble-row ${msg.sender}`}
+                          layout
+                          initial={{ opacity: 0, scale: 0.8, y: 25 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+                          transition={{ 
+                            type: "spring",
+                            stiffness: 350,
+                            damping: 25
+                          }}
+                        >
+                          {msg.sender === "astrologer" && (
+                            <div className="bubble-avatar">✦</div>
+                          )}
+                          <div className={`chat-bubble ${msg.sender}`}>
+                            <p>{msg.text}</p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+
+                    {isTyping && (
+                      <motion.div
+                        key="typing"
+                        className="typing-indicator-row"
+                        layout
+                        initial={{ opacity: 0, scale: 0.8, y: 15 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
+                        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                      >
+                        <div className="bubble-avatar">✦</div>
+                        <div className="typing-bubble">
+                          <span className="typing-dot" />
+                          <span className="typing-dot" />
+                          <span className="typing-dot" />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="phone-input-bar">
+                  <div className="fake-input-text">Type your query...</div>
+                  <div className="send-icon-btn">✦</div>
+                </div>
+              </div>
             </div>
 
-            {/* Middle Orbit Ring */}
-            <div className="ring ring-middle-orbit">
-              <span className="orbit-node node-1" />
-              <span className="orbit-node node-2" />
-            </div>
-
-            {/* Inner Sacred Geometry Ring */}
-            <div className="ring ring-inner-geometry">
-              <div className="astro-diamond" />
-              <div className="astro-diamond alt" />
-            </div>
-
-            {/* Central Sun Core */}
-            <div className="center-sun-core">
-              <div className="sun-center-dot" />
-              <div className="sun-wave" />
-            </div>
+            <motion.div 
+              className="floating-widget-card"
+              animate={{ y: [-6, 6, -6] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <div className="widget-icon">✦</div>
+              <div className="widget-content">
+                <span className="widget-title">New Consultation</span>
+                <span className="widget-subtitle">Completed • ₹600 credited</span>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

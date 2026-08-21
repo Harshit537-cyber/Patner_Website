@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Wallet, MessageCircle, Users, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Wallet,
+  MessageCircle,
+  Users,
+  Star,
+  Wifi,
+  Activity,
+} from 'lucide-react';
 
 import StatCard from '../../components/dashboard/StatCard';
 import EarningsChart from '../../components/dashboard/EarningsChart';
@@ -7,7 +15,6 @@ import ConsultationChart from '../../components/dashboard/ConsultationChart';
 import UpcomingConsultations from '../../components/dashboard/UpcomingConsultations';
 import RecentTransactions from '../../components/dashboard/RecentTransactions';
 import QuickActions from '../../components/dashboard/QuickActions';
-import Loader from '../../components/common/Loader';
 
 import { useDashboard } from '../../hooks/useDashboard';
 import { formatCurrency } from '../../utils/formatters';
@@ -18,6 +25,36 @@ import {
   setDutyOff,
 } from '../../services/partner';
 
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    scale: 0.98,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 const Dashboard = () => {
   const { data, loading } = useDashboard();
 
@@ -25,33 +62,13 @@ const Dashboard = () => {
   const [dutyLoading, setDutyLoading] = useState(true);
   const [dutyUpdating, setDutyUpdating] = useState(false);
 
-  // ==========================================
-  // FETCH DUTY STATUS
-  // ==========================================
   useEffect(() => {
     const fetchDutyStatus = async () => {
       try {
-        console.log('Fetching duty status...');
-
         const response = await getDutyStatus();
+        const result = response?.data ?? response;
 
-        console.log(
-          'FULL DUTY STATUS RESPONSE:',
-          JSON.stringify(response, null, 2)
-        );
-
-        const isOn =
-          response?.dutyOn ??
-          response?.isOnDuty ??
-          response?.onDuty ??
-          response?.duty_status ??
-          response?.data?.dutyOn ??
-          response?.data?.isOnDuty ??
-          response?.data?.onDuty ??
-          response?.data?.duty_status ??
-          response?.status === 'on';
-
-        setDutyOnState(Boolean(isOn));
+        setDutyOnState(Boolean(result?.isOnline));
       } catch (error) {
         console.error('Duty Status Error:', error);
       } finally {
@@ -62,39 +79,18 @@ const Dashboard = () => {
     fetchDutyStatus();
   }, []);
 
-  // ==========================================
-  // DUTY ON
-  // ==========================================
   const handleDutyOn = async () => {
     if (dutyOn || dutyUpdating || dutyLoading) return;
 
     try {
       setDutyUpdating(true);
 
-      console.log('Turning duty ON...');
-
       const response = await setDutyOn();
+      const result = response?.data ?? response;
 
-      console.log(
-        'FULL DUTY ON RESPONSE:',
-        JSON.stringify(response, null, 2)
-      );
-
-      const isOn =
-        response?.dutyOn ??
-        response?.isOnDuty ??
-        response?.onDuty ??
-        response?.duty_status ??
-        response?.data?.dutyOn ??
-        response?.data?.isOnDuty ??
-        response?.data?.onDuty ??
-        response?.data?.duty_status ??
-        response?.status === 'on';
-
-      // Backend ne success diya hai to ON maanenge
-      setDutyOnState(
-        response ? Boolean(isOn || response?.success) : false
-      );
+      if (result?.isOnline === true || result?.success === true) {
+        setDutyOnState(true);
+      }
     } catch (error) {
       console.error('Duty ON Error:', error);
     } finally {
@@ -102,26 +98,18 @@ const Dashboard = () => {
     }
   };
 
-  // ==========================================
-  // DUTY OFF
-  // ==========================================
   const handleDutyOff = async () => {
     if (!dutyOn || dutyUpdating || dutyLoading) return;
 
     try {
       setDutyUpdating(true);
 
-      console.log('Turning duty OFF...');
-
       const response = await setDutyOff();
+      const result = response?.data ?? response;
 
-      console.log(
-        'FULL DUTY OFF RESPONSE:',
-        JSON.stringify(response, null, 2)
-      );
-
-      // OFF API successful hai to directly OFF
-      setDutyOnState(false);
+      if (result?.isOnline === false || result?.success === true) {
+        setDutyOnState(false);
+      }
     } catch (error) {
       console.error('Duty OFF Error:', error);
     } finally {
@@ -130,84 +118,256 @@ const Dashboard = () => {
   };
 
   if (loading || !data) {
-    return <Loader label="Loading your dashboard..." />;
+    return (
+      <div className="dashboard-loading">
+        <div className="dashboard-loader">
+          <motion.div
+            animate={{
+              rotate: 360,
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+            className="dashboard-loader-ring"
+          />
+
+          <motion.div
+            animate={{
+              scale: [1, 1.25, 1],
+              opacity: [0.5, 1, 0.5],
+            }}
+            transition={{
+              duration: 1.4,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+            className="dashboard-loader-dot"
+          />
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          Loading dashboard...
+        </motion.p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      {/* ==========================================
-          DUTY STATUS
-      ========================================== */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 24,
-          padding: '16px 20px',
-          borderRadius: 12,
-          background: '#fff',
-          border: '1px solid #e5e1ec',
-        }}
+    <motion.div
+      className="dashboard-page"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div
+        variants={itemVariants}
+        className={`duty-status-card ${dutyOn ? 'is-online' : 'is-offline'}`}
       >
-        <div>
-          <div
-            style={{
-              fontSize: 14,
-              color: '#777',
-              marginBottom: 4,
-            }}
-          >
-            Duty Status
+        <div className="duty-background-glow duty-glow-one" />
+        <div className="duty-background-glow duty-glow-two" />
+
+        <motion.div
+          className="duty-light-line"
+          animate={{
+            x: ['-120%', '320%'],
+          }}
+          transition={{
+            duration: 3.5,
+            repeat: Infinity,
+            ease: 'linear',
+          }}
+        />
+
+        <motion.div
+          className="duty-floating-dot duty-floating-dot-one"
+          animate={{
+            y: [0, -14, 0],
+            x: [0, 8, 0],
+            opacity: [0.2, 0.7, 0.2],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        <motion.div
+          className="duty-floating-dot duty-floating-dot-two"
+          animate={{
+            y: [0, 12, 0],
+            x: [0, -8, 0],
+            opacity: [0.15, 0.6, 0.15],
+          }}
+          transition={{
+            duration: 3.5,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 0.5,
+          }}
+        />
+
+        <div className="duty-status-content">
+          <div className="duty-title-row">
+            <motion.div
+              animate={{
+                rotate: dutyOn ? [0, 8, -8, 0] : 0,
+              }}
+              transition={{
+                duration: 2,
+                repeat: dutyOn ? Infinity : 0,
+                ease: 'easeInOut',
+              }}
+              className="duty-icon-box"
+            >
+              <Activity size={18} />
+            </motion.div>
+
+            <div>
+              <div className="duty-label">Duty Status</div>
+
+              <div className="duty-subtitle">
+                {dutyOn
+                  ? 'You are available for consultations'
+                  : 'You are currently unavailable'}
+              </div>
+            </div>
           </div>
 
-          <div
-            style={{
-              fontSize: 18,
-              fontWeight: 600,
-            }}
-          >
-            {dutyLoading
-              ? 'Checking...'
-              : dutyOn
-              ? 'You are ON duty'
-              : 'You are OFF duty'}
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={
+                dutyLoading
+                  ? 'loading'
+                  : dutyOn
+                  ? 'online'
+                  : 'offline'
+              }
+              initial={{
+                opacity: 0,
+                y: 8,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -8,
+              }}
+              transition={{
+                duration: 0.3,
+              }}
+              className={`duty-status-pill ${
+                dutyOn ? 'online' : 'offline'
+              }`}
+            >
+              <span className="duty-indicator">
+                <motion.span
+                  className="duty-indicator-wave"
+                  animate={
+                    dutyLoading || dutyOn
+                      ? {
+                          scale: [1, 2.2, 1],
+                          opacity: [0.6, 0, 0.6],
+                        }
+                      : {
+                          scale: 1,
+                          opacity: 0,
+                        }
+                  }
+                  transition={{
+                    duration: 1.6,
+                    repeat: dutyLoading || dutyOn ? Infinity : 0,
+                    ease: 'easeOut',
+                  }}
+                />
+
+                <motion.span
+                  className="duty-indicator-core"
+                  animate={
+                    dutyLoading || dutyOn
+                      ? {
+                          scale: [1, 1.12, 1],
+                        }
+                      : {
+                          scale: 1,
+                        }
+                  }
+                  transition={{
+                    duration: 1.2,
+                    repeat: dutyLoading || dutyOn ? Infinity : 0,
+                    ease: 'easeInOut',
+                  }}
+                />
+              </span>
+
+              <span>
+                {dutyLoading
+                  ? 'Checking status...'
+                  : dutyOn
+                  ? 'You are Online'
+                  : 'You are Offline'}
+              </span>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <button
+        <motion.button
           type="button"
           onClick={dutyOn ? handleDutyOff : handleDutyOn}
           disabled={dutyUpdating || dutyLoading}
-          style={{
-            border: 'none',
-            borderRadius: 8,
-            padding: '10px 20px',
-            cursor:
-              dutyUpdating || dutyLoading
-                ? 'not-allowed'
-                : 'pointer',
-            opacity:
-              dutyUpdating || dutyLoading
-                ? 0.6
-                : 1,
-            background: dutyOn ? '#d32f2f' : '#7042a5',
-            color: '#fff',
-            fontWeight: 600,
-          }}
+          whileHover={
+            dutyUpdating || dutyLoading
+              ? {}
+              : {
+                  scale: 1.04,
+                  y: -2,
+                }
+          }
+          whileTap={
+            dutyUpdating || dutyLoading
+              ? {}
+              : {
+                  scale: 0.96,
+                }
+          }
+          className={`duty-action-button ${
+            dutyOn ? 'go-offline' : 'go-online'
+          }`}
         >
-          {dutyUpdating
-            ? 'Updating...'
-            : dutyOn
-            ? 'Turn Duty OFF'
-            : 'Turn Duty ON'}
-        </button>
-      </div>
+          <motion.span
+            className="duty-button-shine"
+            animate={{
+              x: ['-150%', '250%'],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          />
 
-      {/* ==========================================
-          STATS
-      ========================================== */}
-      <div className="dashboard-grid-stats">
+          <span className="duty-button-content">
+            {dutyUpdating
+              ? 'Updating...'
+              : dutyOn
+              ? 'Go Offline'
+              : 'Go Online'}
+          </span>
+        </motion.button>
+      </motion.div>
+
+      <motion.div
+        variants={itemVariants}
+        className="dashboard-grid-stats"
+      >
         <StatCard
           icon={Wallet}
           label="Total earnings"
@@ -237,63 +397,103 @@ const Dashboard = () => {
           value={`${data.avgRating} / 5`}
           tone="success"
         />
-      </div>
+      </motion.div>
 
-      {/* ==========================================
-          CHARTS
-      ========================================== */}
-      <div className="dashboard-grid-charts">
-        <EarningsChart data={data.earningsTrend} />
-        <ConsultationChart data={data.consultationTrend} />
-      </div>
-
-      {/* ==========================================
-          WIDGETS
-      ========================================== */}
-      <div className="dashboard-grid-widgets">
-        <UpcomingConsultations
-          items={[
-            {
-              id: 'C-1042',
-              customer: 'Priya Nair',
-              type: 'Video',
-              date: '2026-08-13T10:30:00',
-            },
-            {
-              id: 'C-1043',
-              customer: 'Arjun Verma',
-              type: 'Chat',
-              date: '2026-08-13T15:00:00',
-            },
-          ]}
-        />
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 18,
+      <motion.div
+        variants={itemVariants}
+        className="dashboard-grid-charts"
+      >
+        <motion.div
+          whileHover={{
+            y: -5,
+          }}
+          transition={{
+            duration: 0.25,
           }}
         >
-          <QuickActions />
+          <EarningsChart data={data.earningsTrend} />
+        </motion.div>
 
-          <RecentTransactions
+        <motion.div
+          whileHover={{
+            y: -5,
+          }}
+          transition={{
+            duration: 0.25,
+          }}
+        >
+          <ConsultationChart data={data.consultationTrend} />
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        variants={itemVariants}
+        className="dashboard-grid-widgets"
+      >
+        <motion.div
+          whileHover={{
+            y: -4,
+          }}
+          transition={{
+            duration: 0.25,
+          }}
+        >
+          <UpcomingConsultations
             items={[
               {
-                description: 'Weekly payout',
-                date: '2026-08-05',
-                amount: 14200,
+                id: 'C-1042',
+                customer: 'Priya Nair',
+                type: 'Video',
+                date: '2026-08-13T10:30:00',
               },
               {
-                description: 'Weekly payout',
-                date: '2026-07-29',
-                amount: 12800,
+                id: 'C-1043',
+                customer: 'Arjun Verma',
+                type: 'Chat',
+                date: '2026-08-13T15:00:00',
               },
             ]}
           />
+        </motion.div>
+
+        <div className="dashboard-side-widgets">
+          <motion.div
+            whileHover={{
+              y: -4,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
+          >
+            <QuickActions />
+          </motion.div>
+
+          <motion.div
+            whileHover={{
+              y: -4,
+            }}
+            transition={{
+              duration: 0.25,
+            }}
+          >
+            <RecentTransactions
+              items={[
+                {
+                  description: 'Weekly payout',
+                  date: '2026-08-05',
+                  amount: 14200,
+                },
+                {
+                  description: 'Weekly payout',
+                  date: '2026-07-29',
+                  amount: 12800,
+                },
+              ]}
+            />
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
