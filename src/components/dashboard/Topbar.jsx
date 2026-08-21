@@ -6,16 +6,14 @@ import './Topbar.css';
 
 const Topbar = ({ title, onMenuClick }) => {
   const { unreadCount = 0 } = useNotifications() || {};
-const user = JSON.parse(localStorage.getItem('partnerUser'))
+  const user = JSON.parse(localStorage.getItem('partnerUser'));
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Dynamic user details with fallback
   const userName = user?.name || "User's name";
   const userEmail = user?.email || 'radhika@example.com';
   
-  // Get Initials from Name
   const getInitials = (name) => {
     return name
       .split(' ')
@@ -25,7 +23,6 @@ const user = JSON.parse(localStorage.getItem('partnerUser'))
       .substring(0, 2);
   };
 
-  // Close dropdown on outside click or 'Escape' key
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -60,12 +57,12 @@ const user = JSON.parse(localStorage.getItem('partnerUser'))
 
   return (
     <header className="topbar">
-      {/* Left Section */}
       <div className="topbar-left">
         <button
           className="topbar-menu-btn"
           onClick={onMenuClick}
           aria-label="Toggle navigation menu"
+          type="button"
         >
           <Menu size={20} />
         </button>
@@ -75,9 +72,7 @@ const user = JSON.parse(localStorage.getItem('partnerUser'))
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="topbar-right">
-        {/* Notifications Icon */}
         <Link
           to="/dashboard/notifications"
           className="topbar-action-btn"
@@ -91,10 +86,8 @@ const user = JSON.parse(localStorage.getItem('partnerUser'))
           )}
         </Link>
 
-        {/* Divider */}
         <div className="topbar-divider" />
 
-        {/* User Profile Dropdown */}
         <div className="topbar-profile-wrapper" ref={dropdownRef}>
           <button
             className={`topbar-profile-btn ${open ? 'active' : ''}`}
@@ -105,11 +98,15 @@ const user = JSON.parse(localStorage.getItem('partnerUser'))
           >
             <div className="topbar-avatar">
               {getInitials(userName)}
+              <span className="avatar-pulse-ring" />
             </div>
 
             <div className="topbar-user-info">
               <span className="topbar-name">{userName}</span>
-              <span className="topbar-role">Pro Member</span>
+              <span className="topbar-role">
+                <Sparkles size={10} className="role-sparkle" />
+                <span>Namah Astro Partner</span>
+              </span>
             </div>
 
             <ChevronDown
@@ -118,7 +115,6 @@ const user = JSON.parse(localStorage.getItem('partnerUser'))
             />
           </button>
 
-          {/* Dropdown Menu */}
           {open && (
             <div className="profile-dropdown">
               <div className="dropdown-header">

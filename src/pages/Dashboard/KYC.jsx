@@ -40,14 +40,15 @@ const documentConfig = [
   },
 ];
 
-const KYC = () => {
-  const [files, setFiles] = useState({
-    selfie: null,
-    nationalId: null,
-    astrologyCertificate: null,
-    addressProof: null,
-  });
+const initialFiles = {
+  selfie: null,
+  nationalId: null,
+  astrologyCertificate: null,
+  addressProof: null,
+};
 
+const KYC = () => {
+  const [files, setFiles] = useState(initialFiles);
   const [kycData, setKycData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -60,9 +61,13 @@ const KYC = () => {
       setError("");
 
       const response = await getKycStatus();
-      setKycData(response);
+      setKycData(response?.data || response);
     } catch (err) {
-      setError(err.message || "Failed to load KYC status");
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to load KYC status"
+      );
     } finally {
       setLoading(false);
     }
@@ -86,55 +91,95 @@ const KYC = () => {
 
   const handleUpload = async (event) => {
     event.preventDefault();
-
     setMessage("");
     setError("");
 
-    const missing = documentConfig.some(
-      (document) => !files[document.key]
-    );
+    const filesToUpload = {};
 
-    if (missing) {
-      setError("Please select all four KYC documents.");
+    documentConfig.forEach((document) => {
+      const documentData = kycData?.[document.key] || {};
+      const documentStatus = String(
+        documentData.status || ""
+      ).toLowerCase();
+
+      const canUpload =
+        !documentData.url || documentStatus === "rejected";
+
+      if (canUpload && files[document.key]) {
+        filesToUpload[document.key] = files[document.key];
+      }
+    });
+
+    if (!Object.keys(filesToUpload).length) {
+      setError("Please select a document to upload.");
       return;
     }
 
     try {
       setUploading(true);
 
-      const response = await uploadKyc(files);
+      await uploadKyc(filesToUpload);
 
-      setKycData(response);
       setMessage("KYC documents uploaded successfully.");
-
-      setFiles({
-        selfie: null,
-        nationalId: null,
-        astrologyCertificate: null,
-        addressProof: null,
-      });
+      setFiles(initialFiles);
 
       await fetchKycStatus();
     } catch (err) {
-      setError(err.message || "KYC upload failed");
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "KYC upload failed"
+      );
     } finally {
       setUploading(false);
     }
   };
 
-  const status = kycData?.kycStatus || kycData?.status || "Pending";
+  const status = kycData?.kycStatus || "Pending";
 
-  const getDocumentStatus = (key) =>
-    kycData?.[key]?.status || "Not uploaded";
+  const getDocumentData = (key) => {
+    return kycData?.[key] || {};
+  };
+
+  const getDocumentStatus = (key) => {
+    return getDocumentData(key)?.status || "Not uploaded";
+  };
+
+  const isUploadAllowed = (key) => {
+    const document = getDocumentData(key);
+    const documentStatus = String(
+      document.status || ""
+    ).toLowerCase();
+
+    return !document.url || documentStatus === "rejected";
+  };
 
   const getStatusClass = (value) => {
-    const normalized = String(value).toLowerCase();
+    const normalized = String(value || "")
+      .trim()
+      .toLowerCase();
 
     if (normalized === "approved") return "approved";
     if (normalized === "rejected") return "rejected";
     if (normalized === "pending") return "pending";
 
     return "not-uploaded";
+  };
+
+  const getStatusIcon = (value) => {
+    const normalized = String(value || "")
+      .trim()
+      .toLowerCase();
+
+    if (normalized === "approved") {
+      return <BadgeCheck size={20} />;
+    }
+
+    if (normalized === "rejected") {
+      return <XCircle size={20} />;
+    }
+
+    return <Clock3 size={20} />;
   };
 
   if (loading) {
@@ -144,6 +189,7 @@ const KYC = () => {
           <div className="kyc-loader">
             <ShieldCheck size={30} />
           </div>
+
           <h2>Loading KYC status</h2>
           <p>Checking your verification details...</p>
         </div>
@@ -200,14 +246,10 @@ const KYC = () => {
             </p>
           </div>
 
-          <div className={`kyc-main-status ${getStatusClass(status)}`}>
-            {String(status).toLowerCase() === "approved" ? (
-              <BadgeCheck size={18} />
-            ) : String(status).toLowerCase() === "rejected" ? (
-              <XCircle size={18} />
-            ) : (
-              <Clock3 size={18} />
-            )}
+          <div
+            className={`kyc-main-status ${getStatusClass(status)}`}
+          >
+            {getStatusIcon(status)}
             <span>{status}</span>
           </div>
         </motion.div>
@@ -237,8 +279,12 @@ const KYC = () => {
         <form onSubmit={handleUpload}>
           <div className="kyc-section-heading">
             <div>
-              <span className="kyc-section-label">DOCUMENTS</span>
+              <span className="kyc-section-label">
+                DOCUMENTS
+              </span>
+
               <h2>Verification documents</h2>
+
               <p>
                 Upload clear and readable copies of all required
                 documents.
@@ -254,28 +300,47 @@ const KYC = () => {
           <div className="kyc-document-grid">
             {documentConfig.map((document, index) => {
               const Icon = document.icon;
-              const documentStatus = getDocumentStatus(document.key);
+              const documentData = getDocumentData(
+                document.key
+              );
+              const documentStatus = getDocumentStatus(
+                document.key
+              );
               const selectedFile = files[document.key];
+              const canUpload = isUploadAllowed(
+                document.key
+              );
 
               return (
                 <motion.label
                   key={document.key}
-                  className="kyc-document-card"
+                  className={`kyc-document-card ${
+                    !canUpload
+                      ? "kyc-document-locked"
+                      : ""
+                  }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     duration: 0.45,
                     delay: index * 0.08,
                   }}
-                  whileHover={{ y: -5 }}
+                  whileHover={{
+                    y: canUpload ? -5 : 0,
+                  }}
                 >
-                  <input
-                    type="file"
-                    accept="image/*,.pdf"
-                    onChange={(event) =>
-                      handleFileChange(document.key, event)
-                    }
-                  />
+                  {canUpload && (
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      onChange={(event) =>
+                        handleFileChange(
+                          document.key,
+                          event
+                        )
+                      }
+                    />
+                  )}
 
                   <div className="kyc-document-top">
                     <div className="kyc-document-icon">
@@ -296,51 +361,99 @@ const KYC = () => {
                     <p>{document.description}</p>
                   </div>
 
-                  <div
-                    className={`kyc-upload-box ${
-                      selectedFile ? "selected" : ""
-                    }`}
-                  >
-                    <Upload size={20} />
+                  {canUpload ? (
+                    <div
+                      className={`kyc-upload-box ${
+                        selectedFile ? "selected" : ""
+                      }`}
+                    >
+                      <Upload size={20} />
 
-                    <div>
-                      <strong>
-                        {selectedFile
-                          ? selectedFile.name
-                          : "Choose file"}
-                      </strong>
+                      <div>
+                        <strong>
+                          {selectedFile
+                            ? selectedFile.name
+                            : String(
+                                documentStatus
+                              ).toLowerCase() ===
+                              "rejected"
+                            ? "Re-upload document"
+                            : "Choose file"}
+                        </strong>
 
-                      <span>
-                        {selectedFile
-                          ? "File selected"
-                          : "PNG, JPG or PDF"}
-                      </span>
+                        <span>
+                          {selectedFile
+                            ? "File selected"
+                            : "PNG, JPG or PDF"}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div
+                      className={`kyc-upload-box selected ${getStatusClass(
+                        documentStatus
+                      )}`}
+                    >
+                      {getStatusIcon(documentStatus)}
+
+                      <div>
+                        <strong>
+                          {documentStatus}
+                        </strong>
+
+                        <span>
+                          {documentData.url
+                            ? "Document submitted for verification"
+                            : "No document uploaded"}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {String(documentStatus).toLowerCase() ===
+                    "rejected" && (
+                    <div className="kyc-reupload-text">
+                      <Upload size={14} />
+                      Re-upload required
+                    </div>
+                  )}
                 </motion.label>
               );
             })}
           </div>
 
-          <motion.button
-            type="submit"
-            className="kyc-submit-button"
-            disabled={uploading}
-            whileHover={{ scale: uploading ? 1 : 1.01 }}
-            whileTap={{ scale: uploading ? 1 : 0.98 }}
-          >
-            <Upload size={19} />
-            {uploading ? "Uploading documents..." : "Submit KYC Documents"}
-          </motion.button>
+          {documentConfig.some((document) =>
+            isUploadAllowed(document.key)
+          ) && (
+            <motion.button
+              type="submit"
+              className="kyc-submit-button"
+              disabled={uploading}
+              whileHover={{
+                scale: uploading ? 1 : 1.01,
+              }}
+              whileTap={{
+                scale: uploading ? 1 : 0.98,
+              }}
+            >
+              <Upload size={19} />
+
+              {uploading
+                ? "Uploading documents..."
+                : "Submit KYC Documents"}
+            </motion.button>
+          )}
         </form>
 
         <div className="kyc-footer-note">
           <ShieldCheck size={18} />
+
           <div>
             <strong>Your documents are protected</strong>
+
             <span>
-              Your KYC information is securely processed and used only
-              for partner verification.
+              Your KYC information is securely processed and used
+              only for partner verification.
             </span>
           </div>
         </div>

@@ -114,23 +114,27 @@
 }
 
 .kyc-main-status.approved {
-  color: #25733b;
-  background: #eaf7ed;
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid #86efac;
 }
 
 .kyc-main-status.pending {
-  color: #b86b00;
-  background: #fff4df;
+  color: #b77900;
+  background: #fff4cc;
+  border: 1px solid #f2c94c;
 }
 
 .kyc-main-status.rejected {
-  color: #c63838;
-  background: #ffebeb;
+  color: #dc2626;
+  background: #fee2e2;
+  border: 1px solid #f87171;
 }
 
 .kyc-main-status.not-uploaded {
   color: #6f6878;
   background: #f2eff5;
+  border: 1px solid #ddd6e3;
 }
 
 .kyc-alert {
@@ -214,16 +218,34 @@
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 10px 30px rgba(55, 37, 73, 0.055);
   cursor: pointer;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: all 0.25s ease;
 }
 
 .kyc-document-card:hover {
-  border-color: rgba(112, 66, 165, 0.35);
   box-shadow: 0 16px 38px rgba(75, 45, 102, 0.1);
 }
 
 .kyc-document-card input {
   display: none;
+}
+
+.kyc-document-card:has(.kyc-document-status.pending) {
+  border-color: #f2c94c;
+  background: #fffdf5;
+}
+
+.kyc-document-card:has(.kyc-document-status.approved) {
+  border-color: #86efac;
+  background: #fafffb;
+}
+
+.kyc-document-card:has(.kyc-document-status.rejected) {
+  border-color: #f87171;
+  background: #fffafa;
+}
+
+.kyc-document-card:has(.kyc-document-status.not-uploaded) {
+  border-color: #ddd6e3;
 }
 
 .kyc-document-top {
@@ -249,7 +271,10 @@
 }
 
 .kyc-document-status {
-  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 11px;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 700;
@@ -257,23 +282,27 @@
 }
 
 .kyc-document-status.approved {
-  color: #28743c;
-  background: #eaf7ed;
+  color: #15803d !important;
+  background: #dcfce7 !important;
+  border: 1px solid #86efac;
 }
 
 .kyc-document-status.pending {
-  color: #b86b00;
-  background: #fff4df;
+  color: #b77900 !important;
+  background: #fff4cc !important;
+  border: 1px solid #f2c94c;
 }
 
 .kyc-document-status.rejected {
-  color: #c63838;
-  background: #ffebeb;
+  color: #dc2626 !important;
+  background: #fee2e2 !important;
+  border: 1px solid #f87171;
 }
 
 .kyc-document-status.not-uploaded {
-  color: #77717f;
-  background: #f2eff5;
+  color: #6f6878 !important;
+  background: #f2eff5 !important;
+  border: 1px solid #ddd6e3;
 }
 
 .kyc-document-info {
@@ -307,15 +336,32 @@
   transition: all 0.25s ease;
 }
 
-.kyc-document-card:hover .kyc-upload-box {
-  border-color: rgba(112, 66, 165, 0.45);
-  background: #f9f5fc;
-}
-
 .kyc-upload-box.selected {
   border-style: solid;
-  border-color: #c9b1dd;
-  background: #f8f2fc;
+}
+
+.kyc-upload-box.pending {
+  color: #b77900 !important;
+  border-color: #f2c94c !important;
+  background: #fff9e6 !important;
+}
+
+.kyc-upload-box.approved {
+  color: #15803d !important;
+  border-color: #86efac !important;
+  background: #ecfdf3 !important;
+}
+
+.kyc-upload-box.rejected {
+  color: #dc2626 !important;
+  border-color: #f87171 !important;
+  background: #fff1f2 !important;
+}
+
+.kyc-upload-box.not-uploaded {
+  color: #7042a5;
+  border-color: #d8d0df;
+  background: #fbf9fc;
 }
 
 .kyc-upload-box div {
@@ -332,11 +378,40 @@
   white-space: nowrap;
 }
 
+.kyc-upload-box.pending strong {
+  color: #a16207;
+}
+
+.kyc-upload-box.approved strong {
+  color: #15803d;
+}
+
+.kyc-upload-box.rejected strong {
+  color: #dc2626;
+}
+
 .kyc-upload-box span {
   display: block;
   margin-top: 3px;
   color: #96909b;
   font-size: 11px;
+}
+
+.kyc-upload-box.pending span {
+  color: #b77900;
+}
+
+.kyc-upload-box.approved span {
+  color: #15803d;
+}
+
+.kyc-upload-box.rejected span {
+  color: #dc2626;
+}
+
+.kyc-document-card:hover .kyc-upload-box.not-uploaded {
+  border-color: rgba(112, 66, 165, 0.45);
+  background: #f9f5fc;
 }
 
 .kyc-submit-button {
@@ -394,6 +469,16 @@
   color: #8b8590;
   font-size: 12px;
   line-height: 1.5;
+}
+
+.kyc-reupload-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  color: #dc2626;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .kyc-loading-card {

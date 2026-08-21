@@ -14,3 +14,22 @@ export const getClientLogs = async () => {
   const response = await api.get("/bookings/client-logs");
   return response.data;
 };
+
+export const getPartnerAcceptedBookings = async () => {
+  const response = await api.get("/bookings/partner/accepted");
+  return response.data;
+};
+
+export const getPartnerRejectedBookings = async () => {
+  const response = await api.get("/bookings/partner/rejected");
+  return response.data;
+};
+
+export const respondToBookingRequest = async (bookingId, action) => {
+  const response = await api.post("/bookings/partner/respond", {
+    bookingId,
+    action,
+  });
+
+  return response.data;
+};

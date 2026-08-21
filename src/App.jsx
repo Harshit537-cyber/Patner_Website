@@ -13,15 +13,16 @@ import WebsiteLayout from "./pages/Website/WebsiteLayout";
 import FAQ from "./components/website/FAQ";
 import ContactSection from "./components/website/ContactSection";
 import AboutSection from "./components/website/AboutSection";
-import Consultations from './pages/Dashboard/Consultations'
-import Tickets from './pages/Dashboard/Tickets'
-import Earnings from './pages/Dashboard/Earnings'
-import Notifications from './pages/Dashboard/Notifications'
-import Messages from './pages/Dashboard/Messages'
-import KYC from './pages/Dashboard/KYC'
-import Wallet from './pages/Dashboard/Wallet'
-import Profile from './pages/Dashboard/Profile'
-import Settings from './pages/Dashboard/Settings'
+import Consultations from "./pages/Dashboard/Consultations";
+import Tickets from "./pages/Dashboard/Tickets";
+import Earnings from "./pages/Dashboard/Earnings";
+import Notifications from "./pages/Dashboard/Notifications";
+import Messages from "./pages/Dashboard/Messages";
+import KYC from "./pages/Dashboard/KYC";
+import Wallet from "./pages/Dashboard/Wallet";
+import Profile from "./pages/Dashboard/Profile";
+import Settings from "./pages/Dashboard/Settings";
+import LiveStreaming from "./pages/Dashboard/LiveStreaming";
 
 function App() {
   return (
@@ -66,6 +67,10 @@ function App() {
             <Route path="/dashboard/profile" element={<Profile />} />
             <Route path="/dashboard/settings" element={<Settings />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard/live-streaming"
+              element={<LiveStreaming />}
+            />
           </Route>
 
           <Route path="/create-profile" element={<CreateProfile />} />
